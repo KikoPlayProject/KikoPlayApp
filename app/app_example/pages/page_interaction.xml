@@ -1,0 +1,151 @@
+<hview>
+    <vview content_margin="0,0,0,0" min_w="80" spacing="0">
+        <button id="w_page_btn" min_h="30" title="播放器" data:idx="1" btn_group="page_interaction" checkable="true" checked="true" event:click="interaction.onPageBtnClick"> </button>
+        <button id="w_page_btn" min_h="30" title="播放列表" data:idx="2" btn_group="page_interaction" checkable="true" event:click="interaction.onPageBtnClick"> </button>
+        <button id="w_page_btn" min_h="30" title="弹幕" data:idx="3" btn_group="page_interaction" checkable="true" event:click="interaction.onPageBtnClick" > </button>
+        <button id="w_page_btn" min_h="30" title="资料库" data:idx="4" btn_group="page_interaction" checkable="true" event:click="interaction.onPageBtnClick" > </button>
+        <button id="w_page_btn" min_h="30" title="下载" data:idx="5" btn_group="page_interaction" checkable="true" event:click="interaction.onPageBtnClick" > </button>
+        <button id="w_page_btn" min_h="30" title="事件监听" data:idx="6" btn_group="page_interaction" checkable="true" event:click="interaction.onPageBtnClick"> </button>
+        <button id="w_page_btn" min_h="30" title="剪贴板/存储" data:idx="7" btn_group="page_interaction" checkable="true" event:click="interaction.onPageBtnClick" view-depend:trailing-stretch="1"> </button>
+    </vview>
+    <sview id="ipage">
+        <gview content_margin="10,0,0,0" row-stretch="4:1" col-stretch="2:1">
+            <button title="播放文件"  event:click="interaction.onPlayBtnClick" view-depend:row="1" view-depend:col="1" />
+            <hview content_margin="0,0,0,0" h_size_policy="ignore" view-depend:row="2" view-depend:col="1" view-depend:col-span="2">
+                <button title="当前正在播放文件" event:click="interaction.onCurFileBtnClick" />
+                <label id="cur_file_tip" view-depend:trailing-stretch="1" /> 
+            </hview>
+            <hview content_margin="0,0,0,0" view-depend:row="3" view-depend:col="1" view-depend:col-span="2">
+                <textline id="player_property" text="track-list" />
+                <button title="获取" event:click="interaction.onGetPropBtnClick" />
+            </hview>
+            <textbox id="player_property_content" view-depend:row="4" view-depend:col="1" view-depend:col-span="2" editable="false" />
+            <hview content_margin="0,0,0,0" view-depend:row="5" view-depend:col="1" view-depend:col-span="2">
+                <textline id="set_player_command" text="seek 0 absolute" view-depend:row="1" view-depend:col="2" />
+                <button title="设置" event:click="interaction.onSetCommandBtnClick" />
+            </hview>
+        </gview>
+        <gview content_margin="10,0,0,0" row-stretch="2:1" col-stretch="2:1">
+            <hview content_margin="0,0,0,0" view-depend:row="1" view-depend:col="1" view-depend:col-span="2">
+                <gview content_margin="0,0,0,0" col-stretch="2:1">
+                    <label title="标题" view-depend:row="1" view-depend:col="1" /> 
+                    <textline id="item_title" view-depend:row="1" view-depend:col="2" />
+                    <label title="类型" view-depend:row="2" view-depend:col="1" /> 
+                    <hview content_margin="0,0,0,0"  view-depend:row="2" view-depend:col="2">
+                        <combo id="item_type" items="合集,本地文件,Web URL" />
+                        <checkbox id="bgm_collection" title="番组合集" />
+                    </hview>
+                    <label title="插入List位置" view-depend:row="3" view-depend:col="1" /> 
+                    <textline id="item_position" text="/" view-depend:row="3" view-depend:col="2" />
+                    <label title="条目地址" view-depend:row="4" view-depend:col="1" /> 
+                    <textline id="item_path" view-depend:row="4" view-depend:col="2" />
+                    <label title="所属动画标题(可选)" view-depend:row="5" view-depend:col="1" /> 
+                    <textline id="item_anime" view-depend:row="5" view-depend:col="2" />
+                    <label title="弹幕池Id(可选)" view-depend:row="6" view-depend:col="1" /> 
+                    <textline id="item_pool_id" view-depend:row="6" view-depend:col="2" />
+                </gview>
+                <button title="添加条目" data:dtype="add_item" event:click="interaction.onPlayListBtnClick" view-depend:align="33" />
+            </hview>
+            <hview content_margin="0,0,0,0" view-depend:row="2" view-depend:col="1" view-depend:col-span="2">
+                <textbox id="cur_item_info" editable="false" />
+                <button title="当前条目" data:dtype="cur_item" event:click="interaction.onPlayListBtnClick" view-depend:align="33" />
+            </hview>
+        </gview>
+        <gview content_margin="10,0,0,0" row-stretch="1:1;4:1" col-stretch="2:1">
+            <hview content_margin="0,0,0,0" h_size_policy="ignore" view-depend:row="1" view-depend:col="1" view-depend:col-span="2">
+                <gview content_margin="0,0,0,0" col-stretch="2:1">
+                    <hview content_margin="0,0,0,0"  view-depend:row="1" view-depend:col="1" view-depend:col-span="2">
+                        <label title="动画标题" /> 
+                        <textline id="anime_title"  />
+                        <label title="分集标题(可选)" /> 
+                        <textline id="ep_name"  />
+                    </hview>
+                    <hview content_margin="0,0,0,0"  view-depend:row="2" view-depend:col="1" view-depend:col-span="2">
+                        <label title="分集索引" /> 
+                        <textline id="ep_index"  />
+                        <label title="分集类型" /> 
+                        <combo id="ep_item_type" items="EP,SP,OP,ED,Trailer,MAD,Other" />
+                    </hview>
+                    <textbox id="pool_info" editable="false"  view-depend:row="3" view-depend:col="1" view-depend:col-span="2" />
+                </gview>
+                <vview content_margin="0,0,0,0" >
+                    <button title="获取弹幕池" data:dtype="get" event:click="interaction.onPoolBtnClick" />
+                    <button title="添加弹幕池" data:dtype="add" event:click="interaction.onPoolBtnClick" view-depend:trailing-stretch="1" />
+                </vview>
+            </hview>
+            <hview content_margin="0,0,0,0" view-depend:row="2" view-depend:col="1" view-depend:col-span="2">
+                <textline id="danmu_content" text="测试弹幕"  />
+                <button title="发射弹幕" event:click="interaction.onLaunchBtnClick" />
+            </hview>
+            <hview content_margin="0,0,0,0" view-depend:row="3" view-depend:col="1" view-depend:col-span="2">
+                <textline id="pool_id"  placeholder_text="输入弹幕池Id" />
+                <button title="获取弹幕" event:click="interaction.onGetDanmuBtnClick" />
+                <button title="添加弹幕" event:click="interaction.onAddSrcBtnClick" />
+            </hview>
+            <tree id="danmu_tree" root_decorated="false" alter_row_color="true" view-depend:row="4" view-depend:col="1" view-depend:col-span="2" /> 
+        </gview>
+        <gview content_margin="10,0,0,0" row-stretch="4:1;8:1" col-stretch="2:1">
+            <hview content_margin="0,0,0,0"  view-depend:row="1" view-depend:col="1" view-depend:col-span="2">
+                <textline id="anime_name" placeholder_text="输入动画标题" />
+                <button title="获取信息" data:dtype="info" event:click="interaction.onGetAnimeBtnClick"/>
+                <button title="获取标签" data:dtype="tag" event:click="interaction.onGetAnimeBtnClick"/>
+            </hview>
+            <textbox id="anime_info" editable="false" view-depend:row="2" view-depend:col="1" view-depend:col-span="2" />
+            <label title="动画标题" view-depend:row="3" view-depend:col="1"/> 
+            <textline id="n_anime_title" view-depend:row="3" view-depend:col="2" />
+            <label title="放送开始(yyyy-mm-dd)" view-depend:row="4" view-depend:col="1" /> 
+            <textline id="air_date" view-depend:row="4" view-depend:col="2" />
+            <label title="分集数目" view-depend:row="5" view-depend:col="1"/> 
+            <textline id="ep_count" view-depend:row="5" view-depend:col="2" />
+            <label title="url" view-depend:row="6" view-depend:col="1" /> 
+            <textline id="anime_url" view-depend:row="6" view-depend:col="2" />
+            <label title="staff" view-depend:row="7" view-depend:col="1" /> 
+            <textline id="anime_staff" placeholder_text="格式为：key1:value1;key2:value2..." view-depend:row="7" view-depend:col="2"  />
+            <textbox id="anime_desc" placeholder_text="输入动画描述" view-depend:row="8" view-depend:col="1" view-depend:col-span="2" />
+            <textline id="anime_tags" placeholder_text="输入标签，格式：tag1,tag2,..." view-depend:row="9" view-depend:col="1" view-depend:col-span="2" />
+            <hview content_margin="0,0,0,0" view-depend:row="10" view-depend:col="1" view-depend:col-span="2" >
+                <button title="添加动画" data:dtype="info" event:click="interaction.onAddAnimeBtnClick" view-depend:leading-stretch="1" />
+                <button title="添加标签" data:dtype="tag" event:click="interaction.onAddAnimeBtnClick" />
+            </hview>
+        </gview>
+        <gview content_margin="10,0,0,0" row-stretch="1:1;5:1" col-stretch="2:1">
+            <textbox id="download_url" placeholder_text="URL" view-depend:row="1" view-depend:col="1" view-depend:col-span="2" />
+            <hview content_margin="0,0,0,0"  view-depend:row="2" view-depend:col="1" view-depend:col-span="2">
+                <textline id="save_path" placeholder_text="保存位置" />
+                <button title="..."  event:click="interaction.onBrowseSavePathBtnClick"/>
+                <checkbox id="default_path" title="使用默认位置" checked="true" />
+            </hview>
+            <hview content_margin="0,0,0,0" view-depend:row="3" view-depend:col="1" view-depend:col-span="2" >
+                <checkbox id="skip_magnet_confirm" title="直接下载磁力链接(无需确认种子)" />
+                <checkbox id="skip_confirm" title="跳过KikoPlay下载提示"  />
+            </hview>
+            <hview content_margin="0,0,0,0" view-depend:row="4" view-depend:col="1" view-depend:col-span="2" >
+                <button title="添加URL" data:dtype="url" event:click="interaction.onAddTaskBtnClick" view-depend:leading-stretch="1" />
+                <button title="添加种子" data:dtype="torrent" event:click="interaction.onAddTaskBtnClick" />
+            </hview>
+        </gview>
+        <gview content_margin="10,0,0,0" row-stretch="2:1;3:1" col-stretch="2:1">
+            <label title="KikoPlay事件" view-depend:row="1" view-depend:col="1" /> 
+            <list id="event_list" view-depend:row="2" view-depend:col="1" view-depend:col-span="2" event:item_click="widgets.onEventListItemClick" />
+            <textbox id="event_info" view-depend:row="3" view-depend:col="1" view-depend:col-span="2" />
+        </gview>
+        <gview content_margin="10,0,0,0" row-stretch="1:1;3:1" col-stretch="2:1">
+            <textbox id="clipboard_text" view-depend:row="1" view-depend:col="1" view-depend:col-span="2" />
+            <hview content_margin="0,0,0,0" view-depend:row="2" view-depend:col="1" view-depend:col-span="2" >
+                <button title="复制到剪贴板" data:dtype="copy" event:click="interaction.onTextClipboardBtnClick" view-depend:leading-stretch="1" />
+                <button title="从剪贴板粘贴" data:dtype="paste" event:click="interaction.onTextClipboardBtnClick" />
+            </hview>
+            <label id="clipboard_img_lb"  h_size_policy="ignore" v_size_policy="ignore" view-depend:row="3" view-depend:col="1" view-depend:col-span="2"/>
+            <hview content_margin="0,0,0,0" view-depend:row="4" view-depend:col="1" view-depend:col-span="2" >
+                <button title="复制到剪贴板" data:dtype="copy" event:click="interaction.onImgClipboardBtnClick" view-depend:leading-stretch="1" />
+                <button title="从剪贴板粘贴" data:dtype="paste" event:click="interaction.onImgClipboardBtnClick" />
+            </hview>
+            <hview content_margin="0,0,0,0" view-depend:row="5" view-depend:col="1" view-depend:col-span="2" >
+                <textline id="storage_key" placeholder_text="存储Key" />
+                <textline id="storage_val" placeholder_text="存储Value" />
+                <button title="读取" data:dtype="read" event:click="interaction.onStorageBtnClick" />
+                <button title="写入" data:dtype="write" event:click="interaction.onStorageBtnClick" />
+            </hview>
+        </gview>
+    </sview>
+</hview>

@@ -1,0 +1,54 @@
+list#sub_list {
+    show-decoration-selected: 1;
+    outline:0px;
+    font-size: 11pt;
+@if{DarkMode}
+    alternate-background-color: rgb(40, 40, 40);
+@endif
+}
+list#sub_list::item {
+    border: none;
+    background-color: transparent;
+    padding: 6px;
+@if{DarkMode}
+    color:rgb(214, 214, 214);
+@else
+    color:rgb(0, 0, 0);
+@endif
+}
+list#sub_list::item:hover {
+    background: rgba(28, 160, 228, 180);
+    color: #ffffff;
+}
+list#sub_list::item:selected{
+    background: #1CA0E4;
+    color: #ffffff;
+}
+
+button#page_btn{
+    border-style:none;
+    border-radius:0px;
+    padding:5px;
+    color:#989898;
+    background:transparent;
+}
+
+button#page_btn:hover,
+button#page_btn:pressed,
+button#page_btn:checked {
+    border-style:solid;
+    border-width:0px 0px 5px 0px;
+@if{StyleBGMode}
+    border-color:rgb(@ThemeColor);
+@else
+    border-color:#1CA0E4;
+@endif
+
+    background:transparent;
+    
+@if{DarkMode}
+    color:#ffffff;
+@else
+    color:#000000;
+@endif
+}

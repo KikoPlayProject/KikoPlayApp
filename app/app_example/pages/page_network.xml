@@ -1,0 +1,44 @@
+<hview>
+    <vview content_margin="0,0,0,0" min_w="80" spacing="0">
+        <button id="w_page_btn" min_h="30" title="HTTP" data:idx="1" btn_group="page_network" checkable="true" checked="true" event:click="network.onPageBtnClick" />
+        <button id="w_page_btn" min_h="30" title="WebSocket" data:idx="2" btn_group="page_network" checkable="true" event:click="network.onPageBtnClick" view-depend:trailing-stretch="1" />
+    </vview>
+    <sview id="npage">
+         <gview content_margin="10,0,0,0" row-stretch="3:1;6:1" col-stretch="2:1">
+            <combo id="method_combo" items="get,post,head,put,delete" view-depend:row="1" view-depend:col="1" />
+            <textline id="http_url" placeholder_text="URL" view-depend:row="1" view-depend:col="2" />
+            <hview content_margin="0,0,0,0" min_w="80" spacing="0" view-depend:row="2" view-depend:col="1" view-depend:col-span="2">
+                <button id="page_btn" min_h="30" title="Query" data:idx="1" btn_group="page_http_network" checkable="true" checked="true" event:click="network.onHttpPageBtnClick" />
+                <button id="page_btn" min_h="30" title="Header" data:idx="2" btn_group="page_http_network" checkable="true" event:click="network.onHttpPageBtnClick"/>
+                <button id="page_btn" min_h="30" title="Data" data:idx="3" btn_group="page_http_network" checkable="true" event:click="network.onHttpPageBtnClick" view-depend:trailing-stretch="1" />
+            </hview>
+            <sview id="s_http_req_page" content_margin="0,0,0,0" view-depend:row="3" view-depend:col="1" view-depend:col-span="2">
+                <textbox id="http_header" placeholder_text="Query, key=value, 换行分隔" />
+                <textbox id="http_query" placeholder_text="Header, key=value, 换行分隔" />
+                <textbox id="http_data" placeholder_text="Data" view-depend:row="3" view-depend:col="1" view-depend:col-span="2" />
+            </sview>
+            <hview content_margin="0,0,0,0" view-depend:row="4" view-depend:col="1" view-depend:col-span="2">
+                <button title="发送请求" event:click="network.onSendBtnClick" view-depend:leading-stretch="1" />
+            </hview>
+            <hview content_margin="0,0,0,0" min_w="80" spacing="0" view-depend:row="5" view-depend:col="1" view-depend:col-span="2">
+                <button id="page_btn" min_h="30" title="响应" data:idx="1" btn_group="page_http_resp_network" checkable="true" checked="true" event:click="network.onHttpRespPageBtnClick" />
+                <button id="page_btn" min_h="30" title="Header" data:idx="2" btn_group="page_http_resp_network" checkable="true" event:click="network.onHttpRespPageBtnClick" view-depend:trailing-stretch="1" />
+            </hview>
+            <sview id="s_http_resp_page" view-depend:row="6" view-depend:col="1" view-depend:col-span="2">
+                <textbox id="http_resp" placeholder_text="Response" editable="false"  />
+                <textbox id="http_resp_head" placeholder_text="Response Header" editable="false"  />
+            </sview>
+        </gview>
+        <gview content_margin="10,0,0,0" row-stretch="2:1" col-stretch="1:1">
+            <textline id="ws_url" placeholder_text="URL" view-depend:row="1" view-depend:col="1" />
+            <button title="连接" event:click="network.onWSOpenBtnClick" view-depend:row="1" view-depend:col="2" />
+            <textbox id="ws_data" placeholder_text="Data" view-depend:row="2" view-depend:col="1" view-depend:col-span="2"/>
+            <hview content_margin="0,0,0,0" view-depend:row="3" view-depend:col="1" view-depend:col-span="2">
+                <button title="关闭" data:dtype="close" event:click="network.onWsSendBtnClick" view-depend:leading-stretch="1" />
+                <button title="Ping" data:dtype="ping" event:click="network.onWsSendBtnClick" />
+                <button title="发送" data:dtype="send" event:click="network.onWsSendBtnClick" />
+            </hview>
+            <textbox id="ws_recv" max_line="1000" view-depend:row="4" view-depend:col="1" view-depend:col-span="2"/>
+        </gview>
+    </sview>
+</hview>

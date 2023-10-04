@@ -1,0 +1,12 @@
+<window title="App示例" w="450" h="400" content_margin="0,0,0,0" >
+    <hview content_margin="0,0,0,0" spacing="0">
+        <button id="page_btn" min_w="100" min_h="30" title="窗口组件" data:idx="1" btn_group="page_btn" checkable="true" checked="true" event:click="onPageBtnClick" />
+        <button id="page_btn" min_w="100" min_h="30" title="KikoPlay交互" data:idx="2" btn_group="page_btn" checkable="true" event:click="onPageBtnClick" /> 
+        <button id="page_btn" min_w="100" min_h="30" title="网络访问" data:idx="3" btn_group="page_btn" checkable="true" event:click="onPageBtnClick" view-depend:trailing-stretch="1" /> 
+    </hview>
+    <sview id="page">
+        <include content_margin="0,0,0,0" > pages/page_widgets.xml  </include>
+        <include content_margin="0,0,0,0"> pages/page_interaction.xml  </include>
+        <include content_margin="0,0,0,0"> pages/page_network.xml  </include>
+    </sview>
+</window>

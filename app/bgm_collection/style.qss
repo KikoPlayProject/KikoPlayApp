@@ -1,0 +1,16 @@
+#avatar {
+    border:2px solid #f09199;
+}
+
+#collection_hist_list::item {
+    border: none;
+    background-color: transparent;
+}
+
+#collection_hist_list::item:hover {
+    background-color: rgba(167, 227, 251, 0.3);
+}
+
+#collection_hist_list::item:selected {
+    background-color: rgba(167, 227, 251, 0.3);
+}

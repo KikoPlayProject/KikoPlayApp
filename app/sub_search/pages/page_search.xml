@@ -1,0 +1,32 @@
+<sview id="page_container">
+    <gview content_margin="0,0,0,0" row-stretch="2:1" col-stretch="2:1">
+        <combo id="src_combo" view-depend:row="1" view-depend:col="1" />
+        <textline id = "query_textline" event:return_pressed="search.onSearchSub" view-depend:row="1" view-depend:col="2" />
+        <button title=" 搜索字幕 " view-depend:row="1" view-depend:col="3" event:click="search.onSearchSub" />
+        <list id="sub_list" alter_row_color="true" elide_mode="none" word_wrap="true" event:item_double_click="search.onSubItemDClick" disable_h_scroll="true" view-depend:row="2" view-depend:col="1" view-depend:col-span="3" />
+    </gview>
+    <gview content_margin="0,0,0,0" col-stretch="2:1" row-stretch="2:1">
+        <button title="返回" view-depend:row="1" view-depend:col="1" event:click="search.onPageNavigate" data:idx="1"/>
+        <label title="标题" align="1" view-depend:row="2" view-depend:col="1" />
+        <textbox id="sub_title_textbox" view-depend:row="2" view-depend:col="2" view-depend:col-span="3" editable="false" />
+        <label title="描述" align="1" view-depend:row="3" view-depend:col="1" />
+        <textbox id="sub_desc_textbox" view-depend:row="3" view-depend:col="2" view-depend:col-span="3" editable="false" />
+        <label title="保存位置" view-depend:row="4" view-depend:col="1" />
+        <textline id="sub_save_path_textline" view-depend:row="4" view-depend:col="2" />
+        <button title="当前播放视频位置" view-depend:row="4" view-depend:col="3" event:click="search.onSetSavePath" data:path="cur_video"/>
+        <button title="浏览" view-depend:row="4" view-depend:col="4" event:click="search.onSetSavePath" data:path="browse" />
+        <hview content_margin="0,0,0,0"  view-depend:row="5" view-depend:col="1" view-depend:col-span="4">
+            <button title="设置7-Zip位置" event:click="search.onBrowse7zPath" />
+            <button title="直接下载" view-depend:leading-stretch="1" event:click="search.onDownloadSub" />
+            <button title="从压缩包中选择" event:click="search.onDownloadBrowseSub" />
+        </hview>
+    </gview>
+    <gview content_margin="0,0,0,0" col-stretch="2:1" row-stretch="2:1">
+        <hview content_margin="0,0,0,0" view-depend:row="1" view-depend:col="1" view-depend:col-span="2">
+            <button title="返回" event:click="search.onPageNavigate" data:idx="2" view-depend:trailing-stretch="1"/>
+            <checkbox title="全选" event:check_state_changed="search.onSubListCheckStateChanged" />
+            <button title="确认" event:click="search.onConfirmSelect" />
+        </hview>
+        <tree id="sub_content_tree" root_decorated="false" alter_row_color="true" view-depend:row="2" view-depend:col="1" view-depend:col-span="2" />
+    </gview>
+</sview>

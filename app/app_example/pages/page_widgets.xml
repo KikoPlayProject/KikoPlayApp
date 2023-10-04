@@ -1,0 +1,94 @@
+<hview>
+    <vview content_margin="0,0,0,0" min_w="80" spacing="0">
+        <button id="w_page_btn" min_h="30" title="基础组件" data:idx="1" btn_group="page_widgets" checkable="true" checked="true" event:click="widgets.onPageBtnClick"> </button>
+        <button id="w_page_btn" min_h="30" title="对话框" data:idx="2" btn_group="page_widgets" checkable="true" event:click="widgets.onPageBtnClick" > </button>
+        <button id="w_page_btn" min_h="30" title="文本" data:idx="3" btn_group="page_widgets" checkable="true" event:click="widgets.onPageBtnClick" > </button>
+        <button id="w_page_btn" min_h="30" title="列表" data:idx="4" btn_group="page_widgets" checkable="true" event:click="widgets.onPageBtnClick" > </button>
+        <button id="w_page_btn" min_h="30" title="布局" data:idx="5" btn_group="page_widgets" checkable="true" event:click="widgets.onPageBtnClick" > </button>
+        <button id="w_page_btn" min_h="30" title="ListView" data:idx="6" btn_group="page_widgets" checkable="true" event:click="widgets.onPageBtnClick"> </button>
+        <button id="w_page_btn" min_h="30" title="TreeView" data:idx="7" btn_group="page_widgets" checkable="true" event:click="widgets.onPageBtnClick" view-depend:trailing-stretch="1"> </button>
+    </vview>
+    <sview id="wpage">
+        <gview content_margin="10,0,0,0" row-stretch="11:1" col-stretch="3:1">
+            <label title="这个示例展示了KikoPlay为扩展开发提供的各种功能" view-depend:row="1" view-depend:col="1" view-depend:col-span="3" />
+            <radio title="RadioButton1" view-depend:row="2" view-depend:col="1" />
+            <radio title="RadioButton2" view-depend:row="2" view-depend:col="2" />
+            <checkbox title="CheckBox1" view-depend:row="3" view-depend:col="1" />
+            <checkbox title="CheckBox2" view-depend:row="3" view-depend:col="2" />
+            <button title="Button" view-depend:row="4" view-depend:col="1" event:click="widgets.onBtnClick" />
+            <button title="Flash" view-depend:row="4" view-depend:col="2" event:click="widgets.onFlashBtnClick" />
+            <progress id="progress" min="0" max="100" value="50" view-depend:row="5" view-depend:col="1" view-depend:col-span="2"  />
+            <slider id="slider" min="0" max="100" value="50" view-depend:row="6" view-depend:col="1" view-depend:col-span="2" event:value_changed="widgets.onSliderValChanged"  />
+            <label id="input_tip" title="单行文本" view-depend:row="7" view-depend:col="1" />
+            <textline view-depend:row="7" view-depend:col="2" event:text_changed="widgets.onTextChanged" />
+            <label title="定时器测试" view-depend:row="8" view-depend:col="1" />
+            <progress id="t_progress" min="0" max="100" view-depend:row="8" view-depend:col="2" />
+            <label title="下拉列表" id="combo_tip" view-depend:row="9" view-depend:col="1" />
+            <combo items="Item 1,Item 2,Item 3,Item 4" event:current_changed="widgets.onComboChanged" view-depend:row="9" view-depend:col="2" />
+            <label title="图片" view-depend:align="33" view-depend:row="10" view-depend:col="1" />
+            <label id="img_lb" view-depend:row="10" view-depend:col="2" />
+        </gview>
+        <gview content_margin="10,0,0,0" row-stretch="2:1" col-stretch="2:1">
+            <hview content_margin="0,0,0,0" view-depend:row="1" view-depend:col="1" view-depend:col-span="2">
+                <button title="选择文件"  data:dtype="openfile" event:click="widgets.onDialogClick" />
+                <button title="保存文件" data:dtype="savefile" event:click="widgets.onDialogClick" />
+                <button title="选择目录" data:dtype="selectdir" event:click="widgets.onDialogClick" />
+            </hview>
+            <textbox id="path_info_box" view-depend:row="2" view-depend:col="1" view-depend:col-span="2"/>
+            <button title="提示对话框" view-depend:row="3" view-depend:col="1" data:dtype="tip" event:click="widgets.onDialogClick" />
+            <button title="输入对话框" view-depend:row="4" view-depend:col="1" data:dtype="input" event:click="widgets.onDialogClick" />
+            <button title="带有图片的输入对话框" view-depend:row="5" view-depend:col="1" data:dtype="input_with_img" event:click="widgets.onDialogClick" />
+        </gview>
+        <gview content_margin="10,0,0,0" row-stretch="2:1" col-stretch="1:1">
+            <label id="lb_test" text_selectable="true" open_link="true" view-depend:row="1" view-depend:col="1" />
+            <textbox id="textbox" open_link="true" view-depend:row="2" view-depend:col="1" />
+        </gview>
+        <gview content_margin="10,0,0,0" row-stretch="2:1;4:1" col-stretch="2:1">
+            <hview content_margin="0,0,0,0" view-depend:row="1" view-depend:col="1" view-depend:col-span="2">
+                <label id="list_tip" title="简单列表" view-depend:trailing-stretch="1" /> 
+                <button title="添加" event:click="widgets.onListAddBtnClick" data:add_type="simp" />
+            </hview>
+            <list id="simp_list" view-depend:row="2" view-depend:col="1" view-depend:col-span="2" event:item_double_click="widgets.onListItemDoubleClick" />
+            <hview content_margin="0,0,0,0" view-depend:row="3" view-depend:col="1" view-depend:col-span="2">
+                <label id="clist_tip" title="复杂列表" view-depend:trailing-stretch="1" /> 
+                <button title="添加" event:click="widgets.onListAddBtnClick" data:add_type="comp" />
+            </hview>
+            <list id="comp_list" view-depend:row="4" view-depend:col="1" view-depend:col-span="2" />
+        </gview>
+        <gview content_margin="10,0,0,0" row-stretch="3:1" col-stretch="2:1">
+            <hview id="hview_example" view-depend:row="1" view-depend:col="1" view-depend:col-span="2">
+                <button title="水平布局"  /> 
+                <button title="button"  /> 
+                <button title="button"  /> 
+            </hview>
+            <vview id="vview_example" view-depend:row="2" view-depend:col="1">
+                <button title="垂直布局"  /> 
+                <button title="button"  /> 
+                <button title="button"  /> 
+                <button title="button"  /> 
+                <button title="button"  /> 
+            </vview>
+            <gview id="gview_example" view-depend:row="2" view-depend:col="2">
+                <button title="网格布局" view-depend:row="1" view-depend:col="1" /> 
+                <button title="button"  view-depend:row="1" view-depend:col="2" /> 
+                <button title="button" view-depend:row="2" view-depend:col="1" /> 
+            </gview>
+        </gview>
+        <gview content_margin="10,0,0,0" row-stretch="2:1" col-stretch="2:1">
+            <hview content_margin="0,0,0,0" view-depend:row="1" view-depend:col="1" view-depend:col-span="2">
+                <label id="listview_tip" title="带有图标的列表" view-depend:trailing-stretch="1" />
+                <checkbox id="check_listview" title="触底加载" />
+            </hview>
+            <list id="listview" view_mode="icon" icon_size="140,200" view-depend:row="2" view-depend:col="1" view-depend:col-span="2" event:item_double_click="widgets.onListViewDoubleClick" event:scroll_edge="widgets.onScrollEdge" />
+        </gview>
+        <vview content_margin="10,0,0,0" row-stretch="8:1" col-stretch="3:1">
+            <hview content_margin="0,0,0,0"> 
+                <button title="添加条目" event:click="widgets.onAddTreeItem"> </button>
+                <button title="移除条目" event:click="widgets.onRemoveTreeItem" view-depend:trailing-stretch="1"> </button>
+                <checkbox title="隐藏列表头" event:check_state_changed="widgets.onHideTreeHeader">  </checkbox>
+            </hview>
+            <tree id="tree" event:item_double_click="widgets.onTreeItemDClick" /> 
+            <label id="tree_item_tip"> </label>
+        </vview>
+    </sview>
+</hview>

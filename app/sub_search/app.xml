@@ -1,0 +1,12 @@
+<window title="字幕搜" content_margin="0,0,0,0" w="600" h="400">
+    <hview content_margin="0,0,0,0" spacing="0">
+        <button id="page_btn" min_w="100" min_h="30" title="字幕搜索" data:idx="1" btn_group="page_btn" checkable="true" checked="true" event:click="onPageBtnClick" />
+        <button id="page_btn" min_w="100" min_h="30" title="下载任务" data:idx="2" btn_group="page_btn" checkable="true" event:click="onPageBtnClick" view-depend:trailing-stretch="1" /> 
+    </hview>
+    <sview id="page">
+        <include content_margin="0,0,0,0" > pages/page_search.xml  </include>
+        <gview content_margin="0,0,0,0" col-stretch="1:1" row-stretch="1:1">
+            <list id="task_list" disable_h_scroll="true" view-depend:row="1" view-depend:col="1" />
+        </gview>
+    </sview>
+</window>

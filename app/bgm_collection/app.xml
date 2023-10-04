@@ -1,0 +1,35 @@
+<window title="Bangumi收藏助手" w="300" h="300" content_margin="0,0,0,0">
+    <sview id="m_sview" content_margin="0,0,0,0">
+       <vview content_margin="0,0,0,0" >
+            <label id="logo" align="132" />
+            <hview content_margin="0,0,0,0">
+                <textline id="access_token_text" placeholder_text="输入你的Access Token" />
+                <button title="登陆" event:click="onLoginBtnClick"/>
+            </hview>
+            <label open_link="true" title="&lt;a style=&quot;color: rgb(96, 208, 252);&quot; href=&quot;https://next.bgm.tv/demo/access-token&quot;&gt;获取Access Token&lt;/a&gt;" align="132" view-depend:trailing-stretch="1" />
+       </vview>
+       <gview content_margin="0,0,0,0" row-stretch="4:1" col-stretch="1:1">
+            <hview content_margin="0,0,0,0" view-depend:row="1" view-depend:col="1">
+                <label id="avatar" scale_content="true" min_w="50" min_h="50" />
+                <vview content_margin="0,0,0,0" h_size_policy="min_expand" >
+                    <label id="nickname" open_link="true" h_size_policy="ignore" />
+                    <label id="sign" title="还没有签名~" h_size_policy="ignore" view-depend:trailing-stretch="1"/>
+                </vview>
+                <button title="退出登陆" event:click="onLogoutBtnClick" view-depend:align="34" />
+            </hview>
+            <hview content_margin="0,0,0,0" view-depend:row="2" view-depend:col="1">
+                <label title="收藏场景"  view-depend:align="33"/>
+                <vview content_margin="0,0,0,0" view-depend:trailing-stretch="1">
+                    <checkbox id="add_library_check" title="加入资料库(需通过bangumi脚本加入，且包含subject id)" event:check_state_changed="onSceneCheckChanged" />
+                    <checkbox id="item_update_check" title="资料库条目更新(条目通过bangumi脚本更新)" event:check_state_changed="onSceneCheckChanged" />
+                    <checkbox id="ep_finish_check"   title="剧集完播(所属动画需通过bangumi脚本加入资料库，且包含subject id)"  event:check_state_changed="onSceneCheckChanged" />
+                </vview>
+            </hview>
+            <hview content_margin="0,0,0,0" view-depend:row="3" view-depend:col="1">
+                <label title="近期同步记录" view-depend:trailing-stretch="1" />
+                <checkbox id="private_collection_check" title="收藏仅自己可见" event:check_state_changed="onPrivateCheckChanged" />
+            </hview>
+            <list id="collection_hist_list" disable_h_scroll="true" view-depend:row="4" view-depend:col="1" />
+       </gview>
+    </sview>
+</window>

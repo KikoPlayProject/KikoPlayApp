@@ -1,0 +1,26 @@
+<window title="TV Live" w="400" h="700" content_margin="0,0,0,0">
+    <sview id="m_sview" content_margin="0,0,0,0">
+        <gview content_margin="0,0,0,0" col-stretch="2:1" row-stretch="2:1">
+            <button id="navi_add_src" title="&#xe6f3;" view-depend:row="1" view-depend:col="1" event:click="onPageNavigate" data:idx="2" />
+            <combo id="src_combo" view-depend:row="1" view-depend:col="2" event:current_changed="onSrcChanged" />
+            <button id="refresh_btn" title="刷新" event:click="onRefreshClick" view-depend:row="1" view-depend:col="3" />
+            <sview id="s_view" content_margin="0,0,0,0" view-depend:row="2" view-depend:col="1" view-depend:col-span="3">
+            </sview>
+        </gview>
+        <gview content_margin="0,0,0,0" col-stretch="2:1" row-stretch="5:1">
+            <button id="back" title="返回" view-depend:row="1" view-depend:col="1" event:click="onPageNavigate" data:idx="1"/>
+            <label title="名称" view-depend:row="2" view-depend:col="1" />
+            <textline id="src_name_text" view-depend:row="2" view-depend:col="2" view-depend:col-span="2" />
+            <label title="m3u地址" view-depend:row="3" view-depend:col="1" />
+            <textline id="src_url_text" view-depend:row="3" view-depend:col="2" view-depend:col-span="2" />
+            <label title="修改在重启后生效" view-depend:row="4" view-depend:col="1" view-depend:col-span="2" />
+            <button id="add_src" title="添加" view-depend:row="4" view-depend:col="3" event:click="onAddSrc" />
+            <tree id="src_tree" alter_row_color="true" root_decorated="false" view-depend:row="5" view-depend:col="1" view-depend:col-span="3"> 
+                <menu>
+                    <item id="m_copy_url" title="复制地址" event:click="onMenuClick" />
+                    <item id="m_remove" title="删除" event:click="onMenuClick" />
+                </menu>
+            </tree>
+        </gview>
+    </sview>
+</window>
