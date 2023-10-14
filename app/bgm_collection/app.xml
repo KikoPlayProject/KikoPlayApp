@@ -8,7 +8,7 @@
             </hview>
             <label open_link="true" title="&lt;a style=&quot;color: rgb(96, 208, 252);&quot; href=&quot;https://next.bgm.tv/demo/access-token&quot;&gt;获取Access Token&lt;/a&gt;" align="132" view-depend:trailing-stretch="1" />
        </vview>
-       <gview content_margin="0,0,0,0" row-stretch="4:1" col-stretch="1:1">
+       <gview content_margin="0,0,0,0" row-stretch="2:1" col-stretch="1:1">
             <hview content_margin="0,0,0,0" view-depend:row="1" view-depend:col="1">
                 <label id="avatar" scale_content="true" min_w="50" min_h="50" />
                 <vview content_margin="0,0,0,0" h_size_policy="min_expand" >
@@ -17,19 +17,27 @@
                 </vview>
                 <button title="退出登陆" event:click="onLogoutBtnClick" view-depend:align="34" />
             </hview>
-            <hview content_margin="0,0,0,0" view-depend:row="2" view-depend:col="1">
-                <label title="收藏场景"  view-depend:align="33"/>
-                <vview content_margin="0,0,0,0" view-depend:trailing-stretch="1">
-                    <checkbox id="add_library_check" title="加入资料库(需通过bangumi脚本加入，且包含subject id)" event:check_state_changed="onSceneCheckChanged" />
-                    <checkbox id="item_update_check" title="资料库条目更新(条目通过bangumi脚本更新)" event:check_state_changed="onSceneCheckChanged" />
-                    <checkbox id="ep_finish_check"   title="剧集完播(所属动画需通过bangumi脚本加入资料库，且包含subject id)"  event:check_state_changed="onSceneCheckChanged" />
-                </vview>
-            </hview>
-            <hview content_margin="0,0,0,0" view-depend:row="3" view-depend:col="1">
-                <label title="近期同步记录" view-depend:trailing-stretch="1" />
-                <checkbox id="private_collection_check" title="收藏仅自己可见" event:check_state_changed="onPrivateCheckChanged" />
-            </hview>
-            <list id="collection_hist_list" disable_h_scroll="true" view-depend:row="4" view-depend:col="1" />
+            <sview id="list_setting_sview" view-depend:row="2" view-depend:col="1">
+                <gview content_margin="0,0,0,0" col-stretch="2:1" row-stretch="2:1">
+                    <label title="近期同步记录" view-depend:row="1" view-depend:col="1" />
+                    <button title="收藏设置" view-depend:row="1" view-depend:col="3" event:click="onPageNavigate" data:idx="2" />
+                    <list id="collection_hist_list" disable_h_scroll="true" view-depend:row="2" view-depend:col="1" view-depend:col-span="3" />
+                </gview>
+                <gview content_margin="0,0,0,0" col-stretch="1:1" row-stretch="5:1">
+                    <button id="back" title="返回" view-depend:row="1" view-depend:col="1" event:click="onPageNavigate" data:idx="1"/>
+                    <checkbox id="private_collection_check" title="收藏仅自己可见" view-depend:row="2" view-depend:col="1" />
+                    <label title="收藏场景"  view-depend:row="3" view-depend:col="1"/>
+                    <vview content_margin="10,0,0,0" view-depend:row="4" view-depend:col="1">
+                        <checkbox id="add_library_check" title="加入资料库(需通过bangumi脚本加入，且包含subject id)" event:check_state_changed="onSceneCheckChanged" />
+                        <checkbox id="item_update_check" title="资料库条目更新(条目通过bangumi脚本更新)" event:check_state_changed="onSceneCheckChanged" />
+                        <checkbox id="ep_finish_check"   title="剧集完播(所属动画需通过bangumi脚本加入资料库，且包含subject id)"  event:check_state_changed="onSceneCheckChanged" />
+                        <vview content_margin="10,0,0,0">
+                            <checkbox id="ep_finish_update_item_check"  title="剧集完播时更新动画收藏状态"  />
+                        </vview>
+                    </vview>
+                    
+                </gview>
+            </sview>
        </gview>
     </sview>
 </window>

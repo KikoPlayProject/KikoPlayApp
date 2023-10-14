@@ -18,7 +18,7 @@ end
 bgm_api.save_info = function()
     kiko.storage.set("bgm_access_token", bgm_api.access_token)
     local r = bgm_api.user_info.hist_records
-    local max_hist_records = 50
+    local max_hist_records = 30
     if #r > max_hist_records then
         local t = {}
         for i = #r-max_hist_records+1, #r do
@@ -193,6 +193,10 @@ bgm_api.add_collection = function(bgm_id, anime_name, is_private, collection_typ
         error = function(reply)
             local content = reply:content()
             if content == nil or #content == 0 then content = reply:error() end
+            local err, obj = kiko.json2table(content)
+            if err == nil and obj["description"] ~= nil then
+                content = obj["description"]
+            end
             local t = string.format("<small style='color: rgb(252, 96, 125);'>收藏失败: %s</small>", content)
             s_lb:setopt("title", t)
             s_lb:setopt("tooltip", reply:error())
@@ -201,13 +205,13 @@ bgm_api.add_collection = function(bgm_id, anime_name, is_private, collection_typ
     })
 end
 
-bgm_api.ep_finish = function(anime_name, ep_info, is_private)
+bgm_api.ep_finish = function(anime_name, ep_info, is_private, update_item)
     local anime = kiko.library.getanime(anime_name)
     if anime == nil or anime.scriptId ~= "Kikyou.l.Bangumi" then return end
     local bgm_id = tostring(anime.data)
     local ep_index = ep_info.index
     if math.floor(ep_index) == ep_index then ep_index = math.floor(ep_index) end
-    if bgm_api.user_info.collection_bgm_ids[bgm_id] == nil then
+    if bgm_api.user_info.collection_bgm_ids[bgm_id] == nil and update_item then
         bgm_api.add_collection(bgm_id, anime_name, is_private, 3, function()
             bgm_api.ep_finish(anime_name, ep_info, is_private)
         end)
@@ -249,13 +253,17 @@ bgm_api.ep_finish = function(anime_name, ep_info, is_private)
                 bgm_api.user_info.hist_records[title_idx].status = t
                 kiko.storage.set("bgm_user_info", bgm_api.user_info)
                 kiko.flash()
-                if is_last then
+                if is_last and update_item then
                     bgm_api.add_collection(bgm_id, anime_name, is_private, 2)
                 end
             end,
             error = function(reply)
                 local content = reply:content()
                 if content == nil or #content == 0 then content = reply:error() end
+                local err, obj = kiko.json2table(content)
+                if err == nil and obj["description"] ~= nil then
+                    content = obj["description"]
+                end
                 local t = string.format("<small style='color: rgb(252, 96, 125);'>分集进度更新失败: %s</small>", content)
                 s_lb:setopt("title", t)
                 s_lb:setopt("tooltip", reply:error())

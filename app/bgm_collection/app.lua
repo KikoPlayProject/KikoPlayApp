@@ -42,10 +42,16 @@ app.close = function(param)
         add_library_checked = kiko.ui.get("add_library_check"):getopt("checked"),
         item_update_checked = kiko.ui.get("item_update_check"):getopt("checked"), 
         ep_finish_checked = kiko.ui.get("ep_finish_check"):getopt("checked"), 
+        ep_finish_update_item_checked = kiko.ui.get("ep_finish_update_item_check"):getopt("checked"),
         is_private = kiko.ui.get("private_collection_check"):getopt("checked"), 
     })
     app.bgm.save_info()
     return true
+end
+
+app.onPageNavigate = function(param)
+    local s_view = kiko.ui.get("list_setting_sview")
+    s_view:setopt("current_index", param["src"]:data("idx"))
 end
 
 app.set_info_page = function()
@@ -59,12 +65,17 @@ app.set_info_page = function()
     end
 
     local check_status = kiko.storage.get("check_status") or {
-        add_library_checked=true, item_update_checked=true, ep_finish_checked=true, is_private=false
+        add_library_checked=true, 
+        item_update_checked=true, 
+        ep_finish_checked=true, 
+        is_private=false,
+        ep_finish_update_item_checked=false,
     }
     kiko.ui.get("add_library_check"):setopt("checked", check_status.add_library_checked)
     kiko.ui.get("item_update_check"):setopt("checked", check_status.item_update_checked)
     kiko.ui.get("ep_finish_check"):setopt("checked", check_status.ep_finish_checked)
     kiko.ui.get("private_collection_check"):setopt("checked", check_status.is_private)
+    kiko.ui.get("ep_finish_update_item_check"):setopt("checked", check_status.ep_finish_update_item_checked)
 end
 
 app.refresh_avatar = function()
@@ -163,8 +174,9 @@ app.setListenEvent = function(event, enable)
             local anime_name = info.anime_name
             local ep_info = info.epinfo
             local private = kiko.ui.get("private_collection_check"):getopt("checked")
+            local update_item = kiko.ui.get("ep_finish_update_item_check"):getopt("checked")
             if anime_name ~= nil and ep_info ~= nil and ep_info.type == kiko.anime.EP_TYPE_EP then
-                app.bgm.ep_finish(anime_name, ep_info, private)
+                app.bgm.ep_finish(anime_name, ep_info, private, update_item)
             end
         end)
     end
