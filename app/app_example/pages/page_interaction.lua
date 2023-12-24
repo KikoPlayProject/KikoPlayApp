@@ -110,6 +110,17 @@ interaction.onPoolBtnClick = function(param)
         end
         local _, json = kiko.table2json(pool)
         kiko.ui.get("pool_info"):setopt("text", json)
+    elseif dtype == "update" then
+        local inc_dms = kiko.danmu.updatepool({
+            anime=anime_title,
+            ep_index=ep_index,
+            ep_type=ep_type
+        })
+        if inc_dms == nil then
+            app.w:message("弹幕池不存在", kiko.msg.NM_HIDE | kiko.msg.NM_ERROR)
+        else
+            app.w:message(string.format("添加了%d条弹幕", #inc_dms), kiko.msg.NM_HIDE)
+        end
     elseif dtype == "add" then
         local pool_id = kiko.danmu.addpool({
             anime=anime_title,

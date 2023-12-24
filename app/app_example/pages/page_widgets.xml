@@ -17,8 +17,9 @@
             <checkbox title="CheckBox2" view-depend:row="3" view-depend:col="2" />
             <button title="Button" view-depend:row="4" view-depend:col="1" event:click="widgets.onBtnClick" />
             <button title="Flash" view-depend:row="4" view-depend:col="2" event:click="widgets.onFlashBtnClick" />
-            <progress id="progress" min="0" max="100" value="50" view-depend:row="5" view-depend:col="1" view-depend:col-span="2"  />
-            <slider id="slider" min="0" max="100" value="50" view-depend:row="6" view-depend:col="1" view-depend:col-span="2" event:value_changed="widgets.onSliderValChanged"  />
+            <button title="全局提示" view-depend:row="4" view-depend:col="3" event:click="widgets.onTipBtnClick" />
+            <progress id="progress" min="0" max="100" value="50" view-depend:row="5" view-depend:col="1" view-depend:col-span="3"  />
+            <slider id="slider" min="0" max="100" value="50" view-depend:row="6" view-depend:col="1" view-depend:col-span="3" event:value_changed="widgets.onSliderValChanged"  />
             <label id="input_tip" title="单行文本" view-depend:row="7" view-depend:col="1" />
             <textline view-depend:row="7" view-depend:col="2" event:text_changed="widgets.onTextChanged" />
             <label title="定时器测试" view-depend:row="8" view-depend:col="1" />

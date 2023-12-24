@@ -23,8 +23,9 @@ app.lua   // app代码入口
 {
     "name": "TV Live",   // 名称，必须包含
     "id": "kapp.tv",     // id，必须包含
-    "version": 1.0,
-    "icon": "app.png"    // app图标
+    "version": "1.0",
+    "icon": "app.png",    // app图标
+    "min_kiko": "1.0.1"  // KikoPlay最低版本
 }
 ```
 ### app.xml

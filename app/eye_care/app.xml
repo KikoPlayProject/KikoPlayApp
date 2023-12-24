@@ -1,0 +1,16 @@
+<window title="护眼小助手" w="400" h="200" content_margin="0,0,0,0">
+    <gview content_margin="0,0,0,0" row-stretch="3:1" col-stretch="1:1">
+        <hview content_margin="0,0,0,0" view-depend:row="1" view-depend:col="1">
+            <label title="观看视频" />
+            <textline id="duration_text" text="60" />
+            <label title="分钟后提醒我" view-depend:trailing-stretch="1" />
+        </hview>
+        <label title="提醒内容" view-depend:row="2" view-depend:col="1" />
+        <textbox id="tip_text" placeholder_text="输入提醒内容" text="你已经观看一段时间了，休息一下吧~" view-depend:row="3" view-depend:col="1" />
+        <hview content_margin="0,0,0,0" view-depend:row="4" view-depend:col="1">
+            <checkbox id="auto_start_check" title="启动后自动开启提醒" view-depend:trailing-stretch="1" />
+            <button id="start_btn" title="开启提醒" event:click="onStartBtnClick"/>
+            <button id="preview_btn" title="提醒预览" event:click="onPreviewBtnClick"/>
+        </hview>
+    </gview>
+</window>

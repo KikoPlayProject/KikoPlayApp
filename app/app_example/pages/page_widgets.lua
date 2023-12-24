@@ -13,6 +13,17 @@ widgets.onBtnClick = function(param)
     app.w:message("Button点击")
 end
 
+widgets.onTipBtnClick = function(param)
+    kiko.gtip({
+        message="提示测试",
+        --title="test",
+        --timeout=5000,
+        --group="aa",
+        --showclose=true
+        --bg=0xf0000000
+    })
+end
+
 widgets.onSliderValChanged = function(param)
     local progerss = kiko.ui.get("progress")
     progerss:setopt("value", param.value)

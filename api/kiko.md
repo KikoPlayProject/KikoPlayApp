@@ -832,6 +832,23 @@ process对象包含的方法：
    
    闪烁App图标。
 
+ - `function gtip(info)`
+   > `info`: string or table
+   >
+   > 返回：空
+
+   弹出全局提示。`info`类型是string时就是提示内容，为table时结构如下：
+   ```lua
+    {
+      message="提示内容",
+      title="提示标题，可选",
+      timeout=5000,  -- 显示时间，ms，默认4000ms
+      group="组",  --可选，同组提示不会创建新提示窗口
+      showclose=true,  --显示关闭按钮，可选
+      bg=0xf0000000,  --背景色，rrggbbaa，可选
+    }
+   ```
+
  - `viewtable(table)`
 
    可视化Table的全部内容，便于进行调试

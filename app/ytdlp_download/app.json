@@ -1,0 +1,8 @@
+{
+    "name": "yt-dlp下载",
+    "id": "kapp.yt-dlp_download",
+    "version": "1.0",
+    "icon": "app.png",
+    "desc": "yt-dlp gui",
+    "min_kiko": "1.0.1"
+}

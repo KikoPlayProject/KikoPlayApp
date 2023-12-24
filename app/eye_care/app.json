@@ -1,0 +1,8 @@
+{
+    "name": "护眼小助手",
+    "id": "kapp.eye_care_assistant",
+    "version": "1.0",
+    "min_kiko": "1.0.1",
+    "icon": "app.svg",
+    "desc": "提醒你休息的护眼小助手"
+}

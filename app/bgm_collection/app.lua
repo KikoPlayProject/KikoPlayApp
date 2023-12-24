@@ -29,7 +29,9 @@ app.loaded = function(param)
         app.check_user_info()
         app.page:setopt("current_index", 2)
     end
-    w:show()
+    if param.scene ~= kiko.launch_scene.AUTO_START then
+        w:show()
+    end
 end
 
 app.close = function(param)
@@ -175,6 +177,7 @@ app.setListenEvent = function(event, enable)
             local ep_info = info.epinfo
             local private = kiko.ui.get("private_collection_check"):getopt("checked")
             local update_item = kiko.ui.get("ep_finish_update_item_check"):getopt("checked")
+            kiko.log("ep finish: ", anime_name, ep_info)
             if anime_name ~= nil and ep_info ~= nil and ep_info.type == kiko.anime.EP_TYPE_EP then
                 app.bgm.ep_finish(anime_name, ep_info, private, update_item)
             end

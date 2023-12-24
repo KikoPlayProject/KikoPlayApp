@@ -1,6 +1,7 @@
 {
     "name": "Bangumi收藏助手",
     "id": "kapp.bgm_collection_helper",
-    "version": 1.0,
+    "version": "1.1",
+    "min_kiko": "1.0.1",
     "icon": "app.png"
 }

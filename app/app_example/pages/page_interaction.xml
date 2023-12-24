@@ -70,6 +70,7 @@
                 </gview>
                 <vview content_margin="0,0,0,0" >
                     <button title="获取弹幕池" data:dtype="get" event:click="interaction.onPoolBtnClick" />
+                    <button title="更新弹幕池" data:dtype="update" event:click="interaction.onPoolBtnClick" />
                     <button title="添加弹幕池" data:dtype="add" event:click="interaction.onPoolBtnClick" view-depend:trailing-stretch="1" />
                 </vview>
             </hview>

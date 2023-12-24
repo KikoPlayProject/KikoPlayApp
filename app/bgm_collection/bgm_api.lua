@@ -96,9 +96,13 @@ end
 
 bgm_api.get_ep = function(bgmId, ep_info, succ_func, err_func)
     if bgm_api.ep_cache[bgmId] ~= nil then
+        local max_sort = 0
+        for _, ep in ipairs(bgm_api.ep_cache[bgmId]) do
+            if ep.idx > max_sort then max_sort = ep.idx end
+        end
         for _, ep in ipairs(bgm_api.ep_cache[bgmId]) do
             if ep.idx == ep_info.index then
-                if succ_func ~= nil then succ_func(tostring(ep.ep_id)) end
+                if succ_func ~= nil then succ_func(tostring(ep.ep_id), ep.idx == max_sort) end
                 return
             end
         end
@@ -142,6 +146,7 @@ bgm_api.get_ep = function(bgmId, ep_info, succ_func, err_func)
                 if ep.sort > max_sort then max_sort = ep.sort end
             end
             bgm_api.ep_cache[bgmId] = ep_list
+            kiko.log("max_sort: ", max_sort, "target: ", target_ep.idx)
             if target_ep ~= nil and succ_func ~= nil then
                 succ_func(tostring(target_ep.ep_id), target_ep.idx == max_sort and obj.total < obj.limit)
             else
@@ -253,6 +258,7 @@ bgm_api.ep_finish = function(anime_name, ep_info, is_private, update_item)
                 bgm_api.user_info.hist_records[title_idx].status = t
                 kiko.storage.set("bgm_user_info", bgm_api.user_info)
                 kiko.flash()
+                kiko.log("is_last: ", is_last, "update_item: ", update_item)
                 if is_last and update_item then
                     bgm_api.add_collection(bgm_id, anime_name, is_private, 2)
                 end

@@ -1,0 +1,38 @@
+<window title="yt-dlp下载" w="400" h="200" content_margin="0,0,0,0">
+    <sview id="page_container">
+        <gview content_margin="0,0,0,0" row-stretch="2:1;7:2" col-stretch="2:1">
+            <textline id="video_url_textline" placeholder_text="输入视频地址" view-depend:row="1" view-depend:col="1" view-depend:col-span="2"/>
+            <button id="analyze_btn" title="获取信息" event:click="onAnalyzeBtnClick" view-depend:row="1" view-depend:col="3"/>
+            <textbox id="video_desc" editable="false" view-depend:row="2" view-depend:col="1" view-depend:col-span="3" />
+            <label title="视频" view-depend:row="3" view-depend:col="1" />
+            <combo id="video_format" view-depend:row="3" view-depend:col="2" view-depend:col-span="2" />
+            <label title="音频" view-depend:row="4" view-depend:col="1" />
+            <combo id="audio_format" view-depend:row="4" view-depend:col="2" view-depend:col-span="2" />
+            <label title="保存位置" view-depend:row="5" view-depend:col="1" />
+            <textline id="save_location_textline" view-depend:row="5" view-depend:col="2" />
+            <button id="browse_save_location_btn" title="浏览" event:click="onBrowseBtnClick" view-depend:row="5" view-depend:col="3"/>
+            <hview content_margin="0,0,0,0" view-depend:row="6" view-depend:col="1" view-depend:col-span="3">
+                <button id="setting_btn" title="设置" event:click="onPageBtnClick" data:idx="2" view-depend:trailing-stretch="1"/>
+                <checkbox id="add_to_playlist_check" title="下载完成后加入播放列表"  />
+                <button id="download_btn" title="开始下载" event:click="onDownloadBtnClick" />
+            </hview>
+            <textbox id="status_text" editable="false" max_line="1000" view-depend:row="7" view-depend:col="1" view-depend:col-span="3" />
+        </gview>
+        <gview content_margin="0,0,0,0" col-stretch="3:1" row-stretch="5:1">
+            <hview content_margin="0,0,0,0" view-depend:row="1" view-depend:col="1" view-depend:col-span="5">
+                <button title="返回" id="setting_back" event:click="onPageBtnClick" data:idx="1" view-depend:trailing-stretch="1"/>
+            </hview>
+            <label title="设置yt-dlp路径(&lt;a style=&apos;color: rgb(96, 208, 252);&apos; href=&quot;https://github.com/yt-dlp/yt-dlp/releases&quot;&gt;获取&lt;/a&gt;)" open_link="true" view-depend:row="2" view-depend:col="1" />
+            <textline id="yt_dlp_path" editable="false" view-depend:row="2" view-depend:col="2" view-depend:col-span="3" />
+            <button title="浏览" event:click="onSetExePathBtnClick" view-depend:row="2" view-depend:col="5" />
+
+            <label title="使用浏览器cookie" view-depend:row="3" view-depend:col="1" />
+            <combo id="cookie_browser" event:current_changed="onCookieBrowserChanged" view-depend:row="3" view-depend:col="2" />
+            <textline id="browser_profile_path_textline" placeholder_text="浏览器Profile文件夹路径" editable="false" view-depend:row="3" view-depend:col="3" view-depend:col-span="2" />
+            <button id="browse_save_location_btn" title="浏览" event:click="onBrowseProfileBtnClick" view-depend:row="3" view-depend:col="5"/>
+
+            <label title="其他选项（每行格式：--option=value）" view-depend:row="4" view-depend:col="1" view-depend:col-span="5" />
+            <textbox id="option_text" event:text_changed="onOptionTextChanged" view-depend:row="5" view-depend:col="1" view-depend:col-span="5" />
+        </gview>
+    </sview>
+</window>
