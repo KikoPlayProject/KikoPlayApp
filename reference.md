@@ -41,6 +41,11 @@ app.lua   // app代码入口
 app = {}
 
 app.loaded = function(param)
+    -- param包含app启动相关信息
+    -- {
+    --    window: app窗口对象
+    --    scene: 启动场景，kiko.launch_scene.APP_MENU：从app菜单中启动；kiko.launch_scene.AUTO_START：自启动
+    -- }
     local w = param["window"]
     w:show()
 end
