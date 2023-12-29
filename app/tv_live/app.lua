@@ -3,10 +3,9 @@ require "srcs/m3u_src"
 app = {}
 
 app.srcs = {
-    make_m3u_src("TV直播源", "https://live.fanmingming.com/tv/m3u/global.m3u"),
-    make_m3u_src("Radio直播源", "https://live.fanmingming.com/radio/m3u/index.m3u"),
+    make_m3u_src("TV直播源(IPV6)", "https://raw.githubusercontent.com/fanmingming/live/main/tv/m3u/ipv6.m3u"),
+    make_m3u_src("Radio直播源", "https://raw.githubusercontent.com/fanmingming/live/main/radio/m3u/index.m3u"),
     require "srcs/lanjing", 
-    make_m3u_src("IPTV", "https://iptv-org.github.io/iptv/index.nsfw.m3u"),
 }
 
 app.loaded = function(param)
