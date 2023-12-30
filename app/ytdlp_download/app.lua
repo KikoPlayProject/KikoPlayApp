@@ -103,7 +103,7 @@ end
 app.onSetExePathBtnClick = function(param)
     local filename = kiko.dialog.openfile({
         title="设置yt-dlp位置",
-        filter="yt-dlp (*.exe);;all (*.*)",
+        filter="yt-dlp (*.exe);;all (*)",
         multi = false
     })
     if filename and #filename > 0 then
