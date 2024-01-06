@@ -148,5 +148,12 @@ yt_dlp.download = function(url, video, audio, save_path, callback, options)
     p:start(exe_path, yt_dlp.merge_options(download_options, options, url))    
 end
 
+yt_dlp.cancel_download = function()
+    if yt_dlp.cur_process == nil then return false end
+    yt_dlp.cur_process:kill()
+    yt_dlp.cur_process = nil
+    return true
+end
+
 
 return yt_dlp

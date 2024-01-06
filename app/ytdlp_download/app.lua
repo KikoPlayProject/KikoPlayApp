@@ -3,6 +3,7 @@ app = {
     yt_dlp = require "yt_dlp",
     option_text_changed = false,
     current_file_name = nil,
+    is_downloading = false,
 }
 
 app.loaded = function(param)
@@ -272,6 +273,21 @@ app.onDownloadBtnClick = function(param)
     if #save_path == 0 then return end
     kiko.storage.set("ytdlp_save_path", save_path)
 
+    local analyze_btn = kiko.ui.get("analyze_btn")
+    local download_btn=  param.src
+
+    if app.is_downloading then
+        if yt_dlp.cancel_download() then
+            analyze_btn:setopt("enable", true)
+            download_btn:setopt("title", "开始下载")
+            app.is_downloading = false
+            local file_path = save_path .. "/" .. app.current_file_name
+            local l_path = string.encode(file_path, string.CODE_UTF8, string.CODE_LOCAL)
+            os.remove(l_path)
+            return
+        end
+    end
+
     local url = string.trim(kiko.ui.get("video_url_textline"):getopt("text"))
     if #url == 0 then return end
 
@@ -283,14 +299,16 @@ app.onDownloadBtnClick = function(param)
     local audio_format = app.audio_combo:item(audio_idx).data
     if video_format == nil and audio_format == nil then return end
 
-    local analyze_btn = kiko.ui.get("analyze_btn")
-    local download_btn=  param.src
     analyze_btn:setopt("enable", false)
-    download_btn:setopt("enable", false)
+    -- download_btn:setopt("enable", false)
+    download_btn:setopt("title", "取消下载")
+    app.is_downloading = true
 
     app.yt_dlp.download(url, video_format, audio_format, save_path, function()
         analyze_btn:setopt("enable", true)
-        download_btn:setopt("enable", true)
+        -- download_btn:setopt("enable", true)
+        download_btn:setopt("title", "开始下载")
+        app.is_downloading = false
         local add_to_playlist = kiko.ui.get("add_to_playlist_check"):getopt("checked")
         kiko.storage.set("add_to_playlist", add_to_playlist)
         if add_to_playlist and app.current_file_name ~= nil then
