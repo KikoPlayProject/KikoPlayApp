@@ -1,0 +1,24 @@
+button#w_page_btn_install, button#w_page_btn_new {
+    border-style:none;
+    border-radius:0px;
+    padding:5px;
+    color:#989898;
+    background:transparent;
+}
+
+button#w_page_btn_install:hover,
+button#w_page_btn_install:pressed,
+button#w_page_btn_install:checked,
+button#w_page_btn_new:hover,
+button#w_page_btn_new:pressed,
+button#w_page_btn_new:checked {
+    border-style:solid;
+    border-width:0px 0px 0px 0px;
+@if{DarkMode}
+    color:#ffffff;
+    background-color: rgba(255, 255, 255, 50);
+@else
+    color:#000000;
+    background-color: rgba(0, 0, 0, 20);
+@endif
+}

@@ -6,7 +6,8 @@
         <button id="w_page_btn" min_h="30" title="列表" data:idx="4" btn_group="page_widgets" checkable="true" event:click="widgets.onPageBtnClick" > </button>
         <button id="w_page_btn" min_h="30" title="布局" data:idx="5" btn_group="page_widgets" checkable="true" event:click="widgets.onPageBtnClick" > </button>
         <button id="w_page_btn" min_h="30" title="ListView" data:idx="6" btn_group="page_widgets" checkable="true" event:click="widgets.onPageBtnClick"> </button>
-        <button id="w_page_btn" min_h="30" title="TreeView" data:idx="7" btn_group="page_widgets" checkable="true" event:click="widgets.onPageBtnClick" view-depend:trailing-stretch="1"> </button>
+        <button id="w_page_btn" min_h="30" title="TreeView" data:idx="7" btn_group="page_widgets" checkable="true" event:click="widgets.onPageBtnClick"> </button>
+        <button id="w_page_btn" min_h="30" title="Player" data:idx="8" btn_group="page_widgets" checkable="true" event:click="widgets.onPageBtnClick" view-depend:trailing-stretch="1"> </button>
     </vview>
     <sview id="wpage">
         <gview content_margin="10,0,0,0" row-stretch="11:1" col-stretch="3:1">
@@ -49,7 +50,7 @@
                 <label id="list_tip" title="简单列表" view-depend:trailing-stretch="1" /> 
                 <button title="添加" event:click="widgets.onListAddBtnClick" data:add_type="simp" />
             </hview>
-            <list id="simp_list" view-depend:row="2" view-depend:col="1" view-depend:col-span="2" event:item_double_click="widgets.onListItemDoubleClick" />
+            <list id="simp_list" view-depend:row="2" view-depend:col="1" view-depend:col-span="2" event:item_double_click="widgets.onListItemDoubleClick" event:item_changed="widgets.onListItemChanged" />
             <hview content_margin="0,0,0,0" view-depend:row="3" view-depend:col="1" view-depend:col-span="2">
                 <label id="clist_tip" title="复杂列表" view-depend:trailing-stretch="1" /> 
                 <button title="添加" event:click="widgets.onListAddBtnClick" data:add_type="comp" />
@@ -82,14 +83,24 @@
             </hview>
             <list id="listview" view_mode="icon" icon_size="140,200" view-depend:row="2" view-depend:col="1" view-depend:col-span="2" event:item_double_click="widgets.onListViewDoubleClick" event:scroll_edge="widgets.onScrollEdge" />
         </gview>
-        <vview content_margin="10,0,0,0" row-stretch="8:1" col-stretch="3:1">
+        <vview content_margin="10,0,0,0">
             <hview content_margin="0,0,0,0"> 
                 <button title="添加条目" event:click="widgets.onAddTreeItem"> </button>
                 <button title="移除条目" event:click="widgets.onRemoveTreeItem" view-depend:trailing-stretch="1"> </button>
                 <checkbox title="隐藏列表头" event:check_state_changed="widgets.onHideTreeHeader">  </checkbox>
             </hview>
-            <tree id="tree" event:item_double_click="widgets.onTreeItemDClick" /> 
+            <tree id="tree" event:item_double_click="widgets.onTreeItemDClick" event:item_changed="widgets.onTreeItemChanged" /> 
             <label id="tree_item_tip"> </label>
         </vview>
+        <gview content_margin="10,0,0,0" row-stretch="1:1" col-stretch="1:1">
+            <player id="player" event:player_duration_changed="widgets.onPlayerDurationChanged" event:player_pos_changed="widgets.onPlayerPosChanged" view-depend:row="1" view-depend:col="1"/>
+            <slider id="pos_slider" event:slider_moved="widgets.onPosSliderMoved" view-depend:row="2" view-depend:col="1" />
+            <hview content_margin="0,0,0,0" view-depend:row="3" view-depend:col="1" >
+                <button title="打开文件" event:click="widgets.onPlayerOpenFile" />
+                <button title="播放/暂停" event:click="widgets.onPlayerPlayPause" />
+                <button title="停止" event:click="widgets.onPlayerStop" view-depend:trailing-stretch="1" />
+                <slider id="volume_slider" min="0" max="150" value="10" event:value_changed="widgets.onVolumeChanged" />
+            </hview>
+        </gview>
     </sview>
 </hview>

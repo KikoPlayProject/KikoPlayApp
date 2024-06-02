@@ -1,0 +1,13 @@
+<window title="脚本更新器" w="360" h="400" content_margin="0,0,0,0">
+    <gview content_margin="0,0,0,0" row-stretch="2:1" col-stretch="1:1">
+        <hview content_margin="0,0,0,0" view-depend:row="1" view-depend:col="1">
+            <button id="w_page_btn_install" title="已安装" data:idx="1" checkable="true" btn_group="page_widgets" checked="true" event:click="onPageBtnClick"/>
+            <button id="w_page_btn_new" title="未安装" data:idx="2" checkable="true" btn_group="page_widgets" event:click="onPageBtnClick" view-depend:trailing-stretch="1"/>
+            <button id="check_update" title="检查更新" event:click="onCheckUpdateBtnClick" />
+        </hview>
+        <sview id="wpage" content_margin="0,0,0,0" view-depend:row="2" view-depend:col="1">
+            <list id="list_own_scripts" />
+            <list id="list_new_scripts"  />
+        </sview>
+    </gview>
+</window>

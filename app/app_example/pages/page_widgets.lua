@@ -123,8 +123,13 @@ widgets.onDialogClick = function(param)
 end
 
 widgets.onListItemDoubleClick = function(param)
-    local lb = kiko.ui.get("listview_tip")
+    local lb = kiko.ui.get("list_tip")
     lb:setopt("title", "简单列表：" .. param.item.text)
+end
+
+widgets.onListItemChanged = function(param)
+    local lb = kiko.ui.get("list_tip")
+    lb:setopt("title", "简单列表item变化：" .. param.item.text)
 end
 
 widgets.onListViewDoubleClick = function(param)
@@ -218,6 +223,12 @@ widgets.onTreeItemDClick = function(param)
     end
 end
 
+widgets.onTreeItemChanged = function(param)
+    local lb = kiko.ui.get("tree_item_tip")
+    local item = param["item"]
+    lb:setopt("title", string.format("item内容变化：%s", item:get(param["col"], "text")))
+end
+
 local simp_list = kiko.ui.get("simp_list")
 simp_list:append({
     {["text"] = "Item 1"},
@@ -225,7 +236,8 @@ simp_list:append({
     {["text"] = "Item 3", ["fg"]=0x00ff00},
     {["text"] = "Item 4"},
     {["text"] = "Item 5", ["fg"]=0x0000ff},
-    "Item 6"
+    "Item 6",
+    {["text"] = "Item 7, 可编辑", ["edit"] = true }
 })
 
 local listview = kiko.ui.get("listview")
@@ -246,9 +258,53 @@ tree:append({"00:00", "KikoPlay TreeTest", "Kikyou"})
 local items = tree:append({
     {"00:00", "KikoPlay TreeTest", "Kikyou"},
     {{["text"]="00:01", ["bg"]=0xffff00, ["data"]="dt1"}, {["text"]="Hhhhhhhh", ["fg"]=0x0000ff, ["icon"]=env.app_path .. "/img/app.png" }, "Kikyou2"},
+    {{["text"]="这里可以编辑", ["edit"]=true}, {["text"]="Hhhhhhhh", ["fg"]=0x0000ff, ["icon"]=env.app_path .. "/img/app.png" }},
 })
 items[2]:append({
     {{["text"]="00:01", ["fg"]=0xff0000, ["data"]="dt2"}, "child 1", "Kikyou2-1"},
     {{["text"]="00:01", ["data"]=function() app.w:message("tree item") end}, "child 2", "Kikyou2-2"},
 })
+
+local player = kiko.ui.get("player")
+player:command({"set", "volume", "10"})
+local pos_slider = kiko.ui.get("pos_slider")
+widgets.onPlayerOpenFile = function(param)
+    local filename = kiko.dialog.openfile({
+        title="选择文件",
+        path=env.app_path,
+        filter="all (*.*)",
+        multi = false
+    })
+    if filename ~= nil then
+        player:command({"loadfile", filename})
+    end
+end
+
+widgets.onPlayerPlayPause = function(param)
+    player:command({"cycle", "pause"})
+end
+
+widgets.onPlayerStop = function(param)
+    player:command({"stop"})
+end
+
+widgets.onPlayerDurationChanged = function(param)
+    local duration = param["duration"] * 1000  -- ms
+    pos_slider:setopt("max", duration)
+end
+
+widgets.onPlayerPosChanged = function(param)
+    local pos = param["pos"] * 1000  -- ms
+    pos_slider:setopt("value", pos)
+end
+
+widgets.onPosSliderMoved = function(param)
+    local pos = param["value"] / 1000.0
+    player:command({"seek", pos, "absolute"})
+end
+
+widgets.onVolumeChanged = function(param)
+    player:command({"set", "volume", string.format("%d", param["value"])})
+end
+
 return widgets

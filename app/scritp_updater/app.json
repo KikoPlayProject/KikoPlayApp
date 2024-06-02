@@ -1,0 +1,8 @@
+{
+    "name": "脚本更新器",
+    "id": "kapp.script_updater",
+    "version": "1.0",
+    "min_kiko": "1.0.3",
+    "icon": "app.svg",
+    "desc": "KikoPlay 脚本更新器"
+}

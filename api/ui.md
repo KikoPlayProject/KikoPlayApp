@@ -426,6 +426,7 @@ KikoPlay会向事件处理函数传递一个类型为table的参数，对于由u
         ["bg"]="背景色",  -- 整数，例如：0xffff00
         ["align"]="对齐方式",
         ["check"]="是否包含复选框",  -- none: 无复选框，true: 选中，false：未选中
+        ["edit"]="是否可编辑",  -- true/false，1.0.3新增
         ["icon"]="图标",  -- 可以是文件路径、图片二进制数据或者Image对象
         ["data"]="条目附加数据", -- 支持lua的各种数据结构，例如table, function
     }
@@ -526,6 +527,7 @@ KikoPlay会向事件处理函数传递一个类型为table的参数，对于由u
 |  -----              | ----  | ---- |
 | item_click          | item: 点击的item | item单击事件  |
 | item_double_click   | item: 点击的item | item双击事件  |
+| item_changed        | item: 修改的item | item编辑事件，1.0.3新增  |
 | scroll_edge         | bottom: 是否滚动到底端 |  滚动到边缘的事件，如果bottom=false，表示滚动到顶端  |
 ||
 
@@ -703,6 +705,7 @@ KikoPlay会向事件处理函数传递一个类型为table的参数，对于由u
         ["bg"]="背景色",  -- 整数，例如：0xffff00
         ["align"]="对齐方式",
         ["check"]="是否包含复选框",  -- none: 无复选框，true: 选中，false：未选中
+        ["edit"]="是否可编辑",  -- true/false，1.0.3新增
         ["icon"]="图标",  -- 可以是文件路径、图片二进制数据或者Image对象
         ["collapse"]="折叠还是展开",  -- true：折叠 false：展开
         ["data"]="条目附加数据", -- 支持lua的各种数据结构，例如table, function
@@ -900,7 +903,40 @@ item对象包含一系列方法来支持构建树：
 |  -----              | ----  | ---- |
 | item_click          | item: 点击的item | item单击事件  |
 | item_double_click   | item: 点击的item | item双击事件  |
+| item_changed        | item: 修改的item | item编辑事件，1.0.3新增  |
 | scroll_edge         | bottom: 是否滚动到底端 |  滚动到边缘的事件，如果bottom=false，表示滚动到顶端  |
+||
+
+### player
+libmpv播放器组件，1.0.3新增。
+
+#### 方法
+ - `function property(name)`
+   > `name`: 属性名称
+   >
+   > 返回：err_code(错误码，没有错误为0), content(属性内容)
+
+   获取libmpv属性信息，具体有哪些属性可参考[mpv文档](https://mpv.io/manual/stable/#properties)
+
+ - `function command(cmd)`
+   > `cmd`:  包含命令每一部分的array
+   >
+   > 返回：err_code(错误码，没有错误为0)
+
+   向播放器发送没了，实例：
+   ```lua
+   player:command({"loadfile", filename}) --加载文件
+   player:command({"set", "volume", "10"})  -- 设置音量
+
+   ```
+
+#### 事件
+|  事件        | table中的参数   | 描述 |
+|  -----         | ----  | ---- |
+| click   |  | 播放区域点击 |
+| player_pos_changed   | pos: 当前位置(s); duration: 总时长(s) | 播放进度改变事件 |
+| player_state_changed   | state: 0(播放) 1(暂停) 2(播放到结尾) 3(停止)  | 播放状态变化事件 |
+| player_duration_changed   | duration: 总时长(s) | 总时长变化事件 |
 ||
 
 ### window
