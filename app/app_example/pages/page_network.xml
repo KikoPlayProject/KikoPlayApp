@@ -13,8 +13,8 @@
                 <button id="page_btn" min_h="30" title="Data" data:idx="3" btn_group="page_http_network" checkable="true" event:click="network.onHttpPageBtnClick" view-depend:trailing-stretch="1" />
             </hview>
             <sview id="s_http_req_page" content_margin="0,0,0,0" view-depend:row="3" view-depend:col="1" view-depend:col-span="2">
-                <textbox id="http_header" placeholder_text="Query, key=value, 换行分隔" />
-                <textbox id="http_query" placeholder_text="Header, key=value, 换行分隔" />
+                <textbox id="http_query" placeholder_text="Query, key=value, 换行分隔" />
+                <textbox id="http_header" placeholder_text="Header, key=value, 换行分隔" />
                 <textbox id="http_data" placeholder_text="Data" view-depend:row="3" view-depend:col="1" view-depend:col-span="2" />
             </sview>
             <hview content_margin="0,0,0,0" view-depend:row="4" view-depend:col="1" view-depend:col-span="2">

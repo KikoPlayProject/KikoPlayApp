@@ -35,7 +35,7 @@ network.onSendBtnClick = function(param)
         if s ~= nil then
             local k = string.sub(kv, 1, s-1)
             local v = string.sub(kv, e+1)
-            query[k] = v
+            header[k] = v
         end
     end
     local data = kiko.ui.get("http_data"):getopt("text")

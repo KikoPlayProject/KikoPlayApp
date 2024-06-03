@@ -68,6 +68,13 @@
 
    获取当前正在播放的条目，类型同`item_info`。
 
+- `function get(path)`
+   > `path`: string，播放列表路径，以'/'分割，eg: "2024-07/anime/"
+   >
+   > 返回：table，指定path处的条目，没有返回nil
+
+   获取指定路径的条目信息，类型同`item_info`，子条目list位于"children"下，仅返回一层。1.0.3新增。
+
 
 ## 弹幕
 弹幕相关函数位于`kiko.danmu`下。

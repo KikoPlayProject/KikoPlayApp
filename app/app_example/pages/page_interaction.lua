@@ -80,6 +80,12 @@ interaction.onPlayListBtnClick = function(param)
         local cur_item = kiko.playlist.curitem()
         local _, json = kiko.table2json(cur_item)
         cur_item_info:setopt("text", json)
+    elseif dtype == "get_item" then
+        local path = string.trim(kiko.ui.get("playlist_path"):getopt("text"))
+        local item_info = kiko.playlist.get(path)
+        local _, json = kiko.table2json(item_info)
+        local cur_item_info = kiko.ui.get("cur_item_info")
+        cur_item_info:setopt("text", json)
     end
 end
 

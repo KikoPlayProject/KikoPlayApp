@@ -25,7 +25,7 @@
                 <button title="设置" event:click="interaction.onSetCommandBtnClick" />
             </hview>
         </gview>
-        <gview content_margin="10,0,0,0" row-stretch="2:1" col-stretch="2:1">
+        <gview content_margin="10,0,0,0" row-stretch="3:1" col-stretch="2:1">
             <hview content_margin="0,0,0,0" view-depend:row="1" view-depend:col="1" view-depend:col-span="2">
                 <gview content_margin="0,0,0,0" col-stretch="2:1">
                     <label title="标题" view-depend:row="1" view-depend:col="1" /> 
@@ -47,9 +47,11 @@
                 <button title="添加条目" data:dtype="add_item" event:click="interaction.onPlayListBtnClick" view-depend:align="33" />
             </hview>
             <hview content_margin="0,0,0,0" view-depend:row="2" view-depend:col="1" view-depend:col-span="2">
-                <textbox id="cur_item_info" editable="false" />
-                <button title="当前条目" data:dtype="cur_item" event:click="interaction.onPlayListBtnClick" view-depend:align="33" />
+                <textline id="playlist_path"  placeholder_text="输入播放列表中的路径，/分割标题"  view-depend:trailing-stretch="1"/>
+                <button title="获取条目" data:dtype="get_item" event:click="interaction.onPlayListBtnClick"  />
+                <button title="当前条目" data:dtype="cur_item" event:click="interaction.onPlayListBtnClick"  />
             </hview>
+            <textbox id="cur_item_info" editable="false" view-depend:row="3" view-depend:col="1" view-depend:col-span="2" />
         </gview>
         <gview content_margin="10,0,0,0" row-stretch="1:1;4:1" col-stretch="2:1">
             <hview content_margin="0,0,0,0" h_size_policy="ignore" view-depend:row="1" view-depend:col="1" view-depend:col-span="2">
