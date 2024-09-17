@@ -1,0 +1,27 @@
+button#c_page_1, button#c_page_2{
+    background:transparent;
+}
+
+button#c_page_1:hover,
+button#c_page_1:pressed,
+button#c_page_1:checked,
+button#c_page_2:hover,
+button#c_page_2:pressed,
+button#c_page_2:checked {
+    background:rgb(200, 200, 200);
+    
+@if{DarkMode}
+    color:#ffffff;
+@else
+    color:#000000;
+@endif
+}
+
+tree::item {
+    padding: 2px;
+@if{DarkMode}
+    color:rgb(214, 214, 214);
+@else
+    color:rgb(0, 0, 0);
+@endif
+}

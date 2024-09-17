@@ -1,0 +1,68 @@
+<window title="AI字幕" w="500" h="450" content_margin="0,0,0,0" >
+    <sview content_margin="0,0,0,0" id="main_sview">
+        <gview content_margin="0,0,0,0" row-stretch="2:2;5:3">
+            <hview content_margin="0,0,0,0" view-depend:row="1" view-depend:col="1" >
+                <button title="打开文件" event:click="onPlayerOpenFile" />
+                <button title="选择KikoPlay正在播放的文件" event:click="onOpenKikoPlayFile" />
+                <button title="打开字幕文件" id="open_sub_btn" event:click="onOpenSubFile" />
+                <button title="播放/暂停" event:click="onPlayerPlayPause" view-depend:leading-stretch="1" />
+                <slider id="volume_slider" tooltip="音量" min="0" max="150" value="20" event:value_changed="onVolumeChanged" />
+            </hview>
+            <player id="player" event:player_duration_changed="onPlayerDurationChanged" event:player_pos_changed="onPlayerPosChanged" view-depend:row="2" view-depend:col="1"/>
+            <gview content_margin="0,0,0,0" col-stretch="2:1" view-depend:row="3" view-depend:col="1" >
+                <label id="time_label" title="00:00/00:00" view-depend:row="1" view-depend:col="1" />
+                <slider id="pos_slider" event:slider_moved="onPosSliderMoved" view-depend:row="1" view-depend:col="2" />
+                <button title="跳转字幕"  event:click="onJumpSub" view-depend:row="1" view-depend:col="3" />
+            </gview>
+            <hview content_margin="0,0,0,0" view-depend:row="4" view-depend:col="1" >
+                <button id="recognize_btn" title="识别字幕" event:click="onStartRecognize" />
+                <hview content_margin="0,0,0,0" spacing="0" >
+                    <button id="translate_btn" title="翻译字幕" event:click="onStartTranslate" />
+                    <checkbox id="sub_trans_miss_check" title="仅缺失部分" tooltip="如果勾选，仅翻译未翻译的的字幕，已有翻译结果的字幕会跳过" view-depend:leading-spacing="2" />
+                </hview>
+                <hview content_margin="0,0,0,0" spacing="0" >
+                    <button title="保存字幕" event:click="onSaveSub"  />
+                    <combo id="save_sub_type_combo" items="双语,原始,翻译" event:current_changed="onSaveSubComboChanged" />
+                </hview>
+                <button title="载入KikoPlay" event:click="onLoadToKikoPlay" />
+                <button title="设置" event:click="onMainPageBtnClick" data:idx="2" view-depend:leading-stretch="1"/> 
+            </hview>
+            <sview id="content_sview" view-depend:row="5" view-depend:col="1">
+                <tree id="sub_list_tree" root_decorated="false" alter_row_color="true" event:item_changed="onTreeSubItemChanged" >
+                    <menu>
+                        <item id="m_seek" title="跳转" event:click="onMenuClick" />
+                        <item id="m_remove" title="删除" event:click="onMenuClick" />
+                    </menu>
+                </tree> 
+                <textbox id="status_text" editable="false" max_line="1000"  />
+            </sview>
+            <hview content_margin="0,0,0,0" view-depend:row="6" view-depend:col="1">
+                <button id="c_page_1" title="识别结果" data:idx="1" btn_group="content_page_btn" checkable="true" checked="true" event:click="onContentPageBtnClick" />
+                <button id="c_page_2" title="日志输出" data:idx="2" btn_group="content_page_btn" checkable="true" event:click="onContentPageBtnClick" view-depend:trailing-stretch="1"/>
+            </hview>
+        </gview>
+        <gview content_margin="0,0,0,0" row-stretch="13:1" col-stretch="2:1">
+            <hview content_margin="0,0,0,0" view-depend:row="1" view-depend:col="1" view-depend:col-span="3">
+                <button title="返回" event:click="onMainPageBtnClick" data:idx="1" view-depend:trailing-stretch="1" />
+            </hview>
+            <checkbox id="cuda_whisper_check" title="使用cuda加速whisper识别" view-depend:row="2" view-depend:col="1" view-depend:col-span="3" />
+            <label title="Whisper模型文件：" view-depend:row="3" view-depend:col="1" />
+            <textline id="whisper_model_textline" view-depend:row="3" view-depend:col="2" event:text_changed="onWhisperModelChanged" />
+            <button title="浏览" event:click="onBrowseWhisperModel" view-depend:row="3" view-depend:col="3"/>
+            <label title="视频语言识别：" view-depend:row="4" view-depend:col="1"  />
+            <textline id="video_lang_textline" view-depend:row="4" view-depend:col="2" view-depend:col-span="2" event:text_changed="onVideoLangChanged" />
+            <hview content_margin="0,0,0,0" view-depend:row="5" view-depend:col="1" view-depend:col-span="3">
+                <label open_link="true" title="获取模型文件：&lt;a href=&quot;https://huggingface.co/ggerganov/whisper.cpp/tree/main&quot;&gt; huggingface &lt;/a&gt; ， &lt;a href=&quot;https://ggml.ggerganov.com/&quot;&gt; ggerganov &lt;/a&gt;" view-depend:leading-stretch="1" />
+            </hview>
+            <label title="ChatGPT API Key：" view-depend:row="6" view-depend:col="1" />
+            <textline id="chatgpt_api_key_textline" view-depend:row="6" view-depend:col="2" view-depend:col-span="2" event:text_changed="onAPIKeyChanged" />
+            <hview content_margin="0,0,0,0" view-depend:row="7" view-depend:col="1" view-depend:col-span="3">
+                <label open_link="true" title="&lt;a href=&quot;https://github.com/chatanywhere/GPT_API_free&quot;&gt; 获取免费ChatGPT API Key &lt;/a&gt;" view-depend:leading-stretch="1" />
+            </hview>
+            <label title="ChatGPT翻译Prompt：" view-depend:row="8" view-depend:col="1" />
+            <textbox id="prompt_text" event:text_changed="onPromptTextChanged" view-depend:row="8" view-depend:col="2" view-depend:col-span="2" view-depend:row-span="4" />
+            <label title="ChatGPT 每次请求翻译条数：" view-depend:row="12" view-depend:col="1" />
+            <textline id="chatgpt_sub_cnt_textline" view-depend:row="12" view-depend:col="2" view-depend:col-span="2" event:text_changed="onReqSubCntChanged" />
+        </gview>
+    </sview>
+</window>

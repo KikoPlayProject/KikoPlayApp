@@ -1,0 +1,8 @@
+{
+    "name": "AI字幕",
+    "id": "kapp.ai_sub",
+    "icon": "icon.svg",
+    "version": "1.0",
+    "min_kiko": "1.0.3",
+    "desc": "基于whisper和chatgpt的字幕识别&翻译"
+}
