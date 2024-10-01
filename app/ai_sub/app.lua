@@ -2,6 +2,7 @@ app = {
     recognizer = require 'recognizer',
     translator = require 'translator',
     cur_video_file = nil,
+    cur_sub_file = nil,
     cur_sub_res = nil,
     cur_saved_sub_file = nil,
     prompt_changed = false,
@@ -14,6 +15,10 @@ app = {
     _STORAGE_cuda_whisper = "enable_cuda_whisper",
     _STORAGE_chatgpt_req_sub_cnt = "chatgpt_req_sub_cnt",
     _STORAGE_video_lang = "whisper_video_lang",
+    _STORAGE_use_vad = "use_vad",
+    _STORAGE_vad_thres = "vad_thres",
+    _STORAGE_vad_min_silence = "vad_min_silence",
+    _STORAGE_vad_min_speech = "vad_min_speech",
 }
 
 
@@ -49,6 +54,15 @@ app.load_settings = function()
     kiko.ui.get("sub_trans_miss_check"):setopt("checked", kiko.storage.get(app._STORAGE_tran_only_miss) or false)
     kiko.ui.get("prompt_text"):setopt("text", kiko.storage.get(app._STORAGE_chatgpt_prompt) or app.translator:get_prompt())
     kiko.ui.get("cuda_whisper_check"):setopt("checked", kiko.storage.get(app._STORAGE_cuda_whisper) or false)
+    kiko.ui.get("vad_check"):setopt("checked", kiko.storage.get(app._STORAGE_use_vad) or false)
+    
+    local thres_slider = kiko.ui.get("thres_slider")
+    thres_slider:setopt("value", kiko.storage.get(app._STORAGE_vad_thres) or 50)
+    thres_slider:setopt("tooltip", (kiko.storage.get(app._STORAGE_vad_thres) or 50) / 100.0)
+
+    kiko.ui.get("min_silence_textline"):setopt("text", kiko.storage.get(app._STORAGE_vad_min_silence) or "1000")
+    kiko.ui.get("min_speech_textline"):setopt("text", kiko.storage.get(app._STORAGE_vad_min_speech) or "250")
+
     local req_sub_cnt = kiko.storage.get(app._STORAGE_chatgpt_req_sub_cnt) or app.translator:get_req_sub_cnt()
     app.translator:set_req_sub_cnt(req_sub_cnt)
     kiko.ui.get("chatgpt_sub_cnt_textline"):setopt("text", req_sub_cnt)
@@ -74,6 +88,7 @@ app.close = function(param)
     kiko.storage.set("window_config", window_config)
     kiko.storage.set(app._STORAGE_tran_only_miss, kiko.ui.get("sub_trans_miss_check"):getopt("checked"))
     kiko.storage.set(app._STORAGE_cuda_whisper, kiko.ui.get("cuda_whisper_check"):getopt("checked"))
+    kiko.storage.set(app._STORAGE_use_vad, kiko.ui.get("vad_check"):getopt("checked"))
     if app.prompt_changed then
         local prompt = kiko.ui.get("prompt_text"):getopt("text")
         kiko.storage.set(app._STORAGE_chatgpt_prompt, prompt)
@@ -135,6 +150,26 @@ app.onPromptTextChanged = function(param)
     app.prompt_changed = true
 end
 
+app.onVADThresChanged = function(param)
+    local value = param["value"]
+    kiko.storage.set(app._STORAGE_vad_thres, value)
+    param["src"]:setopt("tooltip", value / 100.0)
+end
+
+app.onMinSilenceChanged = function(param)
+    local min_silence = tonumber(string.trim(param["text"]))
+    if min_silence ~= nil and min_silence > 0 then
+        kiko.storage.set(app._STORAGE_vad_min_silence, min_silence)
+    end
+end
+
+app.onMinSpeechChanged = function(param)
+    local min_speech = tonumber(string.trim(param["text"]))
+    if min_speech ~= nil and min_speech > 0 then
+        kiko.storage.set(app._STORAGE_vad_min_speech, min_speech)
+    end
+end
+
 app.onSaveSubComboChanged = function(param)
     if param["index"] == 0 then return end
     kiko.storage.set(app._STORAGE_save_sub_type, param["index"])
@@ -172,6 +207,7 @@ app.onOpenSubFile = function(param)
         if sub_res ~= nil and #sub_res > 0 then
             app.refresh_sub_list(sub_res)
             app.cur_saved_sub_file = filename
+            app.cur_sub_file = filename
         else
             app.w:message("字幕文件打开失败", kiko.msg.NM_ERROR | kiko.msg.NM_HIDE)
         end
@@ -225,6 +261,10 @@ app.onStartRecognize = function(param)
         model = model,
         use_cuda = kiko.ui.get("cuda_whisper_check"):getopt("checked"),
         lang = kiko.storage.get(app._STORAGE_video_lang) or "auto",
+        use_vad = kiko.ui.get("vad_check"):getopt("checked"),
+        vad_thres = (kiko.storage.get(app._STORAGE_vad_thres) or 50) / 100.0,
+        vad_min_silence = kiko.storage.get(app._STORAGE_vad_min_silence) or 1000,
+        vad_min_speech = kiko.storage.get(app._STORAGE_vad_min_speech) or 250,
     }
     local status_text = kiko.ui.get("status_text")
     status_text:clear()
@@ -342,7 +382,7 @@ app.onSaveSub = function(param)
     if app.cur_sub_res == nil then return end
     local from_path = app.cur_video_file
     if from_path == nil then
-        from_path = app.cur_saved_sub_file
+        from_path = app.cur_sub_file
     end
     local pos = string.lastindexof(from_path, "/")
     if pos == -1 then

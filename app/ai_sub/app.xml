@@ -41,7 +41,7 @@
                 <button id="c_page_2" title="日志输出" data:idx="2" btn_group="content_page_btn" checkable="true" event:click="onContentPageBtnClick" view-depend:trailing-stretch="1"/>
             </hview>
         </gview>
-        <gview content_margin="0,0,0,0" row-stretch="13:1" col-stretch="2:1">
+        <gview content_margin="0,0,0,0" row-stretch="18:1" col-stretch="2:1">
             <hview content_margin="0,0,0,0" view-depend:row="1" view-depend:col="1" view-depend:col-span="3">
                 <button title="返回" event:click="onMainPageBtnClick" data:idx="1" view-depend:trailing-stretch="1" />
             </hview>
@@ -49,20 +49,32 @@
             <label title="Whisper模型文件：" view-depend:row="3" view-depend:col="1" />
             <textline id="whisper_model_textline" view-depend:row="3" view-depend:col="2" event:text_changed="onWhisperModelChanged" />
             <button title="浏览" event:click="onBrowseWhisperModel" view-depend:row="3" view-depend:col="3"/>
-            <label title="视频语言识别：" view-depend:row="4" view-depend:col="1"  />
-            <textline id="video_lang_textline" view-depend:row="4" view-depend:col="2" view-depend:col-span="2" event:text_changed="onVideoLangChanged" />
-            <hview content_margin="0,0,0,0" view-depend:row="5" view-depend:col="1" view-depend:col-span="3">
-                <label open_link="true" title="获取模型文件：&lt;a href=&quot;https://huggingface.co/ggerganov/whisper.cpp/tree/main&quot;&gt; huggingface &lt;/a&gt; ， &lt;a href=&quot;https://ggml.ggerganov.com/&quot;&gt; ggerganov &lt;/a&gt;" view-depend:leading-stretch="1" />
+            <hview content_margin="0,0,0,0" view-depend:row="4" view-depend:col="1" view-depend:col-span="3">
+                <label open_link="true" title="获取模型文件：&lt;a href=&quot;https://huggingface.co/ggerganov/whisper.cpp/tree/main&quot;&gt; huggingface &lt;/a&gt; ， &lt;a href=&quot;https://ggml.ggerganov.com/&quot;&gt; ggerganov &lt;/a&gt;，&lt;a href=&quot;https://www.modelscope.cn/models/cjc1887415157/whisper.cpp/files&quot;&gt; 魔塔社区 &lt;/a&gt;" view-depend:leading-stretch="1" />
             </hview>
-            <label title="ChatGPT API Key：" view-depend:row="6" view-depend:col="1" />
-            <textline id="chatgpt_api_key_textline" view-depend:row="6" view-depend:col="2" view-depend:col-span="2" event:text_changed="onAPIKeyChanged" />
-            <hview content_margin="0,0,0,0" view-depend:row="7" view-depend:col="1" view-depend:col-span="3">
+            <label title="视频语言识别：" view-depend:row="5" view-depend:col="1"  />            
+            <textline id="video_lang_textline" view-depend:row="5" view-depend:col="2" view-depend:col-span="2" event:text_changed="onVideoLangChanged" />
+            <hview content_margin="0,0,0,0" view-depend:row="6" view-depend:col="1" view-depend:col-span="3">
+                <label open_link="true" title="其他支持的语言：&lt;a href=&quot;https://github.com/openai/whisper/blob/main/whisper/tokenizer.py#L10&quot;&gt; 查看 &lt;/a&gt; " view-depend:leading-stretch="1" />
+            </hview>
+        
+            <checkbox id="vad_check" title="启用VAD(Voice Activity Detection)，自动过滤无语音部分" view-depend:row="7" view-depend:col="1" view-depend:col-span="3" />
+            <label title="VAD检测阈值(越小越敏感)：" view-depend:row="8" view-depend:col="1"  />            
+            <slider id="thres_slider" view-depend:row="8" view-depend:col="2" view-depend:col-span="2" min="1" max="99" value="50" tooltip="0.5" event:value_changed="onVADThresChanged" />
+            <label title="语音之间最小空白(ms)：" view-depend:row="9" view-depend:col="1" tooltip="两条语音之间的时间间隔小于最小空白则会被合并" />            
+            <textline id="min_silence_textline" text="1000" view-depend:row="9" view-depend:col="2" view-depend:col-span="2" event:text_changed="onMinSilenceChanged" />
+            <label title="语音最少持续(ms)：" view-depend:row="10" view-depend:col="1" tooltip="持续时间小于该值的语音段将被丢弃"  />            
+            <textline id="min_speech_textline" text="250" view-depend:row="10" view-depend:col="2" view-depend:col-span="2" event:text_changed="onMinSpeechChanged" />
+
+            <label title="ChatGPT API Key：" view-depend:row="11" view-depend:col="1" />
+            <textline id="chatgpt_api_key_textline" view-depend:row="11" view-depend:col="2" view-depend:col-span="2" event:text_changed="onAPIKeyChanged" />
+            <hview content_margin="0,0,0,0" view-depend:row="12" view-depend:col="1" view-depend:col-span="3">
                 <label open_link="true" title="&lt;a href=&quot;https://github.com/chatanywhere/GPT_API_free&quot;&gt; 获取免费ChatGPT API Key &lt;/a&gt;" view-depend:leading-stretch="1" />
             </hview>
-            <label title="ChatGPT翻译Prompt：" view-depend:row="8" view-depend:col="1" />
-            <textbox id="prompt_text" event:text_changed="onPromptTextChanged" view-depend:row="8" view-depend:col="2" view-depend:col-span="2" view-depend:row-span="4" />
-            <label title="ChatGPT 每次请求翻译条数：" view-depend:row="12" view-depend:col="1" />
-            <textline id="chatgpt_sub_cnt_textline" view-depend:row="12" view-depend:col="2" view-depend:col-span="2" event:text_changed="onReqSubCntChanged" />
+            <label title="ChatGPT翻译Prompt：" view-depend:row="13" view-depend:col="1" />
+            <textbox id="prompt_text" event:text_changed="onPromptTextChanged" view-depend:row="13" view-depend:col="2" view-depend:col-span="2" view-depend:row-span="4" />
+            <label title="ChatGPT 每次请求翻译条数：" view-depend:row="17" view-depend:col="1" />
+            <textline id="chatgpt_sub_cnt_textline" view-depend:row="17" view-depend:col="2" view-depend:col-span="2" event:text_changed="onReqSubCntChanged" />
         </gview>
     </sview>
 </window>
