@@ -107,9 +107,10 @@ app.check_update = function(remote_scripts)
     local new_scripts = {}
     local valid_type = {
         ["danmu"] = 0,
-        ["library"] = 1,
-        ["resource"] = 2,
-        ["bgm_calendar"] = 3,
+        ["match"] = 1,
+        ["library"] = 2,
+        ["resource"] = 3,
+        ["bgm_calendar"] = 4,
     }
     for _, s in pairs(remote_scripts) do
         if ls_map[s.id] == nil and valid_type[s.type] ~= nil then
@@ -129,7 +130,7 @@ app.set_update_scripts = function(update_scripts)
         return
     end
     tip_btn:setopt("title", string.format("已安装(%d)", #update_scripts))
-    local script_type_strs = {"弹幕脚本", "资料库脚本", "资源脚本", "日历脚本"}
+    local script_type_strs = {"弹幕脚本", "文件识别脚本", "资料库脚本", "资源脚本", "日历脚本"}
     for _, s in pairs(update_scripts) do
         local ls, rs = s[1], s[2]
         local idx = own_list:append("")
@@ -172,7 +173,7 @@ app.set_new_scripts = function(new_scripts)
         return
     end
     tip_btn:setopt("title", string.format("未安装(%d)", #new_scripts))
-    local script_type_strs = {"弹幕脚本", "资料库脚本", "资源脚本", "日历脚本"}
+    local script_type_strs = {"弹幕脚本", "文件识别脚本", "资料库脚本", "资源脚本", "日历脚本"}
     for _, s in pairs(new_scripts) do
         local idx = new_list:append("")
         local view = new_list:setview(idx, string.format([[
