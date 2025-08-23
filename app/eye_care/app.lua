@@ -72,7 +72,7 @@ app.run = function()
                     group = "eye_tip",
                     showclose = true,
                     timeout = 5000,
-                    bg = 0xf01BD61A
+                    bg = 0xf0135f4d
                 })
                 app.cur_watch_duration = 0
             end   
@@ -115,7 +115,7 @@ app.onPreviewBtnClick = function(param)
         message = app.tip_text,
         group = "eye_tip",
         showclose = true,
-        bg = 0xf01BD61A
+        bg = 0xf0135f4d
     })
 end
 

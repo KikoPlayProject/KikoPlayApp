@@ -1,7 +1,8 @@
 <hview>
     <vview content_margin="0,0,0,0" min_w="80" spacing="0">
         <button id="w_page_btn" min_h="30" title="HTTP" data:idx="1" btn_group="page_network" checkable="true" checked="true" event:click="network.onPageBtnClick" />
-        <button id="w_page_btn" min_h="30" title="WebSocket" data:idx="2" btn_group="page_network" checkable="true" event:click="network.onPageBtnClick" view-depend:trailing-stretch="1" />
+        <button id="w_page_btn" min_h="30" title="WebSocket" data:idx="2" btn_group="page_network" checkable="true" event:click="network.onPageBtnClick" />
+        <button id="w_page_btn" min_h="30" title="Browser" data:idx="3" btn_group="page_network" checkable="true" event:click="network.onPageBtnClick" view-depend:trailing-stretch="1" />
     </vview>
     <sview id="npage">
          <gview content_margin="10,0,0,0" row-stretch="3:1;6:1" col-stretch="2:1">
@@ -39,6 +40,12 @@
                 <button title="发送" data:dtype="send" event:click="network.onWsSendBtnClick" />
             </hview>
             <textbox id="ws_recv" max_line="1000" view-depend:row="4" view-depend:col="1" view-depend:col-span="2"/>
+        </gview>
+         <gview content_margin="10,0,0,0" row-stretch="3:1" col-stretch="1:1">
+            <textline id="browser_url" text="http://www.bing.com" view-depend:row="1" view-depend:col="1" view-depend:col-span="2"/>
+            <button title="通过Browser获取url内容" event:click="network.onBrowserGetBtnClick" view-depend:row="2" view-depend:col="2" />
+            <button title="通过Browser打开" event:click="network.onBrowserShowBtnClick" view-depend:row="2" view-depend:col="3" />
+            <textbox id="url_data" placeholder_text="Data" view-depend:row="3" view-depend:col="1" view-depend:col-span="3"/>
         </gview>
     </sview>
 </hview>

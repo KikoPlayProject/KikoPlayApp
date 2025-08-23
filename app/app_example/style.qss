@@ -2,8 +2,8 @@ button#page_btn,button#w_page_btn{
     border-style:none;
     border-radius:0px;
     padding:5px;
-    color:#989898;
     background:transparent;
+    color: #9f9f9f;
 }
 
 button#page_btn:hover,
@@ -17,11 +17,7 @@ button#page_btn:checked {
     border-color:#1CA0E4;
 @endif
     background:transparent;
-@if{DarkMode}
-    color:#ffffff;
-@else
-    color:#000000;
-@endif
+    color: #ffffff;
 }
 
 button#w_page_btn:hover,
@@ -34,15 +30,20 @@ button#w_page_btn:checked {
 @else
     border-color:#1CA0E4;
 @endif
-@if{DarkMode}
-    color:#ffffff;
-    background-color: rgba(255, 255, 255, 50);
-@else
-    color:#000000;
-    background-color: rgba(0, 0, 0, 20);
-@endif
+    color: #ffffff;
 }
 
 #hview_example,#vview_example, #gview_example {
     background-color: rgba(0, 0, 0, 60);
+}
+
+list {
+    @if{hasBackground}
+        background-color: rgba(255, 255, 255, 40);
+    @else
+        background-color: rgb(60, 60, 60);
+    @endif
+    color: rgb(240,240,240);
+    border: 0px solid rgb(50, 50, 50);
+    border-radius: 8px;
 }

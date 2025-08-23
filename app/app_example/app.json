@@ -1,4 +1,5 @@
 {
     "name": "App测试",
-    "id": "kapp.test"
+    "id": "kapp.test",
+    "min_kiko": "2.0.0"
 }

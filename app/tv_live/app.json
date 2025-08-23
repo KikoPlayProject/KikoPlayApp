@@ -2,5 +2,6 @@
     "name": "TV Live",
     "id": "kapp.tv",
     "version": 1.0,
+    "min_kiko": "2.0.0",
     "icon": "app.png"
 }

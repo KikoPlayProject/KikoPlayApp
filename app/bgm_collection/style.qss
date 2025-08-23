@@ -14,3 +14,7 @@
 #collection_hist_list::item:selected {
     background-color: rgba(167, 227, 251, 0.3);
 }
+
+#item_text_label {
+    font-size: 20px;
+}

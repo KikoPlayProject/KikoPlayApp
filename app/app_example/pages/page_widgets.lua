@@ -10,7 +10,7 @@ widgets.onFlashBtnClick = function(param)
 end
 
 widgets.onBtnClick = function(param)
-    app.w:message("Button点击")
+    app.w:message("Button点击\nsddsdsds")
 end
 
 widgets.onTipBtnClick = function(param)

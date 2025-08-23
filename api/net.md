@@ -1,5 +1,5 @@
 # <img src="../kikoplay.png" width=24 /> KikoPlay 扩展App开发参考 - 网络访问
-2023.09 By Kikyou，本文档适用于KikoPlay 1.0.0及以上版本
+2025.08 By Kikyou，本文档适用于KikoPlay 2.0.0及以上版本
 
 KikoPlay提供同步/异步http api和websocket api供app使用，这些函数位于`kiko.net`中。
 
@@ -225,3 +225,65 @@ websocket对象方法：
    > 返回：构造websocket时，params表中的extra字段内容
 
    获取构造websocket时设置的extra信息。
+
+
+## Browser
+2.0.0引入浏览器对象，底层基于QWebEngineView，通过`kiko.browser.create`函数创建一个browser对象。
+ - `function create()`
+   >
+   > 返回：browser对象
+
+另外几个位于`kiko.browser`的函数：
+ - `function cookie(domain, path)`
+   > `domain`: string，获取指定domain的cookie，或者为空（获取全部cookie）
+   >
+   > `path`: string，获取指定domain下具体path的cookie，或者为空（获取domain全部cookie）
+   >
+   > 返回：string/table
+
+   获取cookie，根据是否设置domain/path返回table或string：string（指定了domain和path）；table: {path: cookie, ...} （仅仅指定domain）；table: {domain: {path: cookie, ...}} （未指定domain和path）
+
+ - `function ua()`
+   >
+   > 返回：string
+
+   获取浏览器对象的user agent
+
+ - `function setua(user_agent)`
+   > `user_agent`: string
+   > 
+   > 返回：空
+
+   设置浏览器对象的user agent，影响全部实例
+
+browser对象方法：
+ - `function load(url, params, timeout)`
+   > `url`: string，地址
+   >
+   > `params`：table，url query参数，可以为空
+   >
+   > `timeout`：number，超时时间，可以为空，默认15s
+   >
+   > 返回：bool，是否加载成功
+
+   阻塞加载url
+
+- `function html()`
+   > 
+   > 返回：string，当前页面html
+
+   获取当前页面html
+
+ - `function runjs(js)`
+   > `js`: string，要执行的js代码
+   >
+   > 返回：js代码返回结果
+
+   在当前页面阻塞执行js并返回结果
+
+ - `function show(tip)`
+   > `tip`: string，提示信息，可惜
+   >
+   > 返回：空
+
+   弹出窗口显示网页

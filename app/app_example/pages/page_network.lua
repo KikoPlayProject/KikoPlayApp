@@ -116,4 +116,25 @@ network.onWsSendBtnClick = function(param)
     end
 end
 
+network.onBrowserGetBtnClick = function(param)
+    local url = kiko.ui.get("browser_url"):getopt("text")
+    if url and url ~= "" then
+        param["src"]:setopt("enable", false)
+        local b = kiko.browser.create()
+        local succ = b:load(url)
+        local content = b:html()
+        kiko.ui.get("url_data"):setopt("text", content)
+        param["src"]:setopt("enable", true)
+    end
+end
+
+network.onBrowserShowBtnClick = function(param)
+    local url = kiko.ui.get("browser_url"):getopt("text")
+    if url and url ~= "" then
+        local b = kiko.browser.create()
+        local succ = b:load(url)
+        b:show()
+    end
+end
+
 return network
