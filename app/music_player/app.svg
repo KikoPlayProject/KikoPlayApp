@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- 绿色圆形背景 -->
+  <circle cx="64" cy="64" r="60" fill="#4CAF50" stroke="#388E3C" stroke-width="2"/>
+  
+  <!-- 方案2: 播放按钮图标 - 现代简约 -->
+  <g transform="translate(64, 64)">
+    <!-- 外圆 -->
+    <circle cx="0" cy="0" r="30" fill="none" stroke="white" stroke-width="4"/>
+    <!-- 播放三角形 -->
+    <path d="M -12 -18 L 18 0 L -12 18 Z" fill="white"/>
+  </g>
+  
+  <!-- 装饰圈 -->
+  <circle cx="64" cy="64" r="58" fill="none" stroke="#81C784" stroke-width="1" opacity="0.4"/>
+</svg>

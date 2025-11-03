@@ -1,0 +1,80 @@
+<window title="音乐播放器" w="800" h="600" content_margin="0,0,0,0">
+    <!-- 顶部工具栏 -->
+    <hview id="toolbar" h="50" content_margin="5,5,5,5" spacing="5">
+        <button id="btn_toggle_playlist" title="隐藏播放列表" min_w="100" event:click="onTogglePlaylist"/>
+        <button id="btn_add_files" title="添加文件" min_w="80" event:click="onAddFiles"/>
+        <button id="btn_add_folder" title="添加文件夹" min_w="80" event:click="onAddFolder"/>
+        <button id="btn_clear_list" title="清空列表" min_w="80" event:click="onClearList"/>
+        <view view-depend:trailing-stretch="1"/>
+        <label id="status_label" title="准备就绪"/>
+    </hview>
+    
+    <!-- 主要内容区域 -->
+    <gview content_margin="0,0,0,0" spacing="0" view-depend:stretch="1" col-stretch="1:1;2:2">
+        <!-- 左侧播放列表 -->
+        <vview id="playlist_panel" min_w="200" content_margin="5,5,5,5" spacing="5" view-depend:col="1" view-depend:row="1">
+            <label title="播放列表" h_size_policy="fix"/>
+            <tree id="playlist_tree" root_decorated="false" header_visible="false" event:item_double_click="onPlaylistTreeItemDoubleClick" view-depend:stretch="1">
+                <menu>
+                    <item id="m_move_up" title="上移" event:click="onPlaylistMenuClick"/>
+                    <item id="m_move_down" title="下移" event:click="onPlaylistMenuClick"/>
+                    <item id="m_remove" title="删除" event:click="onPlaylistMenuClick"/>
+                </menu>
+            </tree>
+        </vview>
+        
+        <!-- 右侧播放控制区域 -->
+        <gview content_margin="5,5,5,5" spacing="5" row-stretch="2:1" col-stretch="1:1" view-depend:col="2" view-depend:row="1">
+            <!-- 音乐信息显示（包含专辑封面） -->
+            <hview h="120" content_margin="15,15,15,0" spacing="15" view-depend:col="1" view-depend:row="1" view-depend:row-span="1">
+                <!-- 专辑封面区域 -->
+                <label id="album_cover" max_w="120" max_h="120" min_w="120" min_h="120" scale_content="true" />
+                
+                <!-- 歌曲信息区域 -->
+                <vview content_margin="0,0,0,0" spacing="8" view-depend:stretch="1" view-depend:trailing-stretch="1">
+                    <label id="song_title" title="未播放" />
+                    <label id="song_artist" title="艺术家: --" />
+                    <label id="song_album" title="专辑: --"/>
+                    <view view-depend:stretch="1"/>
+                </vview>
+            </hview>
+            
+            <!-- 歌词显示区域 -->
+            <vview content_margin="15,0,15,15" spacing="5" view-depend:col="1" view-depend:row="2" view-depend:row-span="1" >
+                <textbox id="lyrics_text"  word_wrap="true" editable="false"  view-depend:stretch="1"/>
+            </vview>
+            
+            <!-- 播放控制区域 -->
+            <vview content_margin="5,5,5,5" spacing="5" view-depend:col="1" view-depend:row="3" view-depend:row-span="1">
+                <!-- 进度条 -->
+                <hview h="30" content_margin="5,5,5,5" spacing="5">
+                    <label id="current_time" title="00:00" w="50" h_size_policy="fix"/>
+                    <slider id="progress_slider" view-depend:stretch="1" min="0" max="100" value="0" event:slider_moved="onProgressSliderMoved"/>
+                    <label id="total_time" title="00:00" w="50" h_size_policy="fix"/>
+                </hview>
+                
+                <!-- 播放控制按钮 -->
+                <hview h="50" content_margin="5,0,5,0" spacing="5">
+                    <view view-depend:trailing-stretch="1"/>
+                    <button id="btn_prev" title="上一首" min_w="80" event:click="onPrevSong"/>
+                    <button id="btn_play_pause" title="播放" min_w="80" event:click="onPlayPause"/>
+                    <button id="btn_next" title="下一首" min_w="80" event:click="onNextSong"/>
+                    <combo id="loop_mode" w="120" min_w="100" items="列表顺序,列表循环,列表随机,单曲循环" event:current_changed="onLoopModeChanged"/>
+                    <view view-depend:trailing-stretch="1"/>
+                </hview>
+                
+                <!-- 音量控制 -->
+                <hview h="40" content_margin="5,0,5,0" spacing="5">
+                    <label title="音量" w="40" h_size_policy="fix"/>
+                    <slider id="volume_slider" w="150" min="0" max="100" value="70" event:value_changed="onVolumeChanged"/>
+                    <label id="volume_label" title="70%" w="40" h_size_policy="fix"/>
+                    <view view-depend:trailing-stretch="1"/>
+                    <button id="btn_mute" title="静音" min_w="60" event:click="onMuteToggle"/>
+                </hview>
+            </vview>
+            
+            <!-- 播放器组件（隐藏） -->
+            <player id="music_player" w="1" h="1" event:player_duration_changed="onPlayerDurationChanged" event:player_state_changed="onPlayerStateChanged" visible="false" view-depend:col="0" view-depend:row="3" view-depend:row-span="1"/>
+        </gview>
+    </gview>
+</window>

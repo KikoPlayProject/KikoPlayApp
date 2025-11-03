@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+  <!-- 深色背景 -->
+  <circle cx="40" cy="40" r="38" fill="#2c3e50" stroke="#34495e" stroke-width="1"/>
+  
+  <!-- 唱片外圈纹理 -->
+  <circle cx="40" cy="40" r="35" fill="none" stroke="#27ae60" stroke-width="0.8" opacity="0.3"/>
+  <circle cx="40" cy="40" r="32" fill="none" stroke="#27ae60" stroke-width="0.6" opacity="0.25"/>
+  <circle cx="40" cy="40" r="29" fill="none" stroke="#27ae60" stroke-width="0.4" opacity="0.2"/>
+  
+  <!-- 唱片内圈 -->
+  <circle cx="40" cy="40" r="26" fill="#34495e" stroke="#27ae60" stroke-width="1" opacity="0.8"/>
+  
+  <!-- 唱片中心孔 -->
+  <circle cx="40" cy="40" r="4" fill="#2c3e50" stroke="#27ae60" stroke-width="0.5"/>
+  
+  <!-- 唱片标签区域 -->
+  <circle cx="40" cy="40" r="12" fill="none" stroke="#27ae60" stroke-width="1" opacity="0.6"/>
+  
+  <!-- 细微的反光效果 -->
+  <path d="M25 25 Q40 20 55 25" stroke="#27ae60" stroke-width="0.5" fill="none" opacity="0.4"/>
+</svg>

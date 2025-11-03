@@ -1,0 +1,269 @@
+/* 音乐播放器样式 - 现代深色主题 */
+
+/* 主窗口样式 */
+window {
+    background-color: #1a1a1a;
+    font-family: "Microsoft YaHei", "SimHei", sans-serif;
+    color: #e0e0e0;
+    border-radius: 12px;
+}
+
+/* 工具栏样式 */
+#toolbar {
+    background-color: #252525;
+    border-bottom: 1px solid #404040;
+    border-radius: 0 0 8px 8px;
+}
+
+/* 按钮样式 - 现代扁平化设计 */
+button {
+    background-color: #3a3a3a;
+    border: 1px solid #555555;
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 14px;
+    color: #e0e0e0;
+    font-weight: 500;
+}
+
+button:hover {
+    background-color: #454545;
+    border-color: #666666;
+}
+
+button:pressed {
+    background-color: #2a2a2a;
+}
+
+/* 播放控制按钮 - 现代渐变设计 */
+#btn_prev, #btn_play_pause, #btn_next {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #4caf50, stop:0.5 #388e3c, stop:1 #2e7d32);
+    border: 1px solid #2e7d32;
+    border-radius: 8px;
+}
+
+#btn_prev:hover, #btn_play_pause:hover, #btn_next:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #66bb6a, stop:0.5 #4caf50, stop:1 #388e3c);
+}
+
+#btn_prev:pressed, #btn_play_pause:pressed, #btn_next:pressed {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #2e7d32, stop:0.5 #1b5e20, stop:1 #004d40);
+}
+
+/* 滑块样式 */
+slider {
+    background-color: transparent;
+    border: none;
+}
+
+/* 进度条滑块 - 现代渐变风格 */
+#progress_slider {
+    height: 20px;
+}
+
+#progress_slider::groove:horizontal {
+    border: 1px solid #404040;
+    height: 8px;
+    background-color: #2a2a2a;
+    border-radius: 4px;
+}
+
+#progress_slider::groove:horizontal:enabled {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #2e7d32, stop:1 #4caf50);
+}
+
+#progress_slider::handle:horizontal {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #81c784, stop:1 #a5d6a7);
+    border: 2px solid #2e7d32;
+    width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    margin: -5px 0;
+}
+
+#progress_slider::handle:horizontal:hover {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #a5d6a7, stop:1 #c8e6c9);
+    border-color: #388e3c;
+}
+
+#progress_slider::handle:horizontal:pressed {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #66bb6a, stop:1 #81c784);
+    border-color: #1b5e20;
+}
+
+/* 音量滑块 - 现代渐变风格 */
+#volume_slider {
+    width: 150px;
+    height: 20px;
+}
+
+#volume_slider::groove:horizontal {
+    border: 1px solid #404040;
+    height: 6px;
+    background-color: #2a2a2a;
+    border-radius: 3px;
+}
+
+#volume_slider::groove:horizontal:enabled {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #1976D2, stop:1 #42a5f5);
+}
+
+#volume_slider::handle:horizontal {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #64b5f6, stop:1 #90caf9);
+    border: 2px solid #1976D2;
+    width: 14px;
+    height: 14px;
+    border-radius: 7px;
+    margin: -4px 0;
+}
+
+#volume_slider::handle:horizontal:hover {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #90caf9, stop:1 #bbdefb);
+    border-color: #1565c0;
+}
+
+#volume_slider::handle:horizontal:pressed {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #42a5f5, stop:1 #64b5f6);
+    border-color: #0d47a1;
+}
+
+/* 标签样式 - 现代化设计 */
+label {
+    color: #e0e0e0;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+/* 音乐信息标签样式 */
+#song_title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #81c784;
+    padding: 4px 0;
+    letter-spacing: 0.3px;
+}
+
+#song_artist, #song_album, #song_duration, #lyrics_label {
+    font-size: 12px;
+    color: #b0bec5;
+    padding: 2px 0;
+    font-weight: 400;
+}
+
+/* 状态栏标签 */
+#status_label {
+    color: #90a4ae;
+    font-size: 12px;
+    font-weight: 300;
+}
+
+/* 播放列表样式 - 现代化设计 */
+tree {
+    background-color: #252525;
+    border: 1px solid #404040;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #e0e0e0;
+    padding: 4px;
+}
+
+tree::item {
+    padding: 6px 8px;
+    border-radius: 4px;
+    margin: 1px 0;
+}
+
+tree::item:selected {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #2e7d32, stop:1 #388e3c);
+    color: #ffffff;
+    border: 1px solid #1b5e20;
+}
+
+tree::item:hover {
+    background-color: #3a3a3a;
+}
+
+/* 播放器组件样式 */
+player {
+    background-color: #1a1a1a;
+    border: 2px solid #404040;
+    border-radius: 8px;
+}
+
+/* 音量相关标签 */
+#volume_label {
+    color: #90a4ae;
+    font-size: 12px;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* 进度条和音量滑块的特殊效果 */
+#progress_slider::groove:horizontal:enabled {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #2e7d32, stop:0.7 #4caf50, stop:1 #66bb6a);
+}
+
+#volume_slider::groove:horizontal:enabled {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #1976D2, stop:0.7 #42a5f5, stop:1 #64b5f6);
+}
+
+/* 静音按钮 - 现代渐变设计 */
+#btn_mute {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #ff9800, stop:0.5 #f57c00, stop:1 #ef6c00);
+    border: 1px solid #ef6c00;
+    border-radius: 6px;
+}
+
+#btn_mute:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #ffb74d, stop:0.5 #ff9800, stop:1 #f57c00);
+}
+
+#btn_mute:pressed {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #ef6c00, stop:0.5 #e65100, stop:1 #bf360c);
+}
+
+/* 专辑封面样式 - 适配暗色主题 */
+#album_cover {
+    min-width: 80px;
+    min-height: 80px;
+    max-width: 80px;
+    max-height: 80px;
+    border: 1px solid #404040;
+    border-radius: 6px;
+    background-color: #1a1a1a;
+}
+
+/* 歌词文本样式 */
+#lyrics_text {
+    background-color: #2d3748;
+    color: #e2e8f0;
+    border: 1px solid #4a5568;
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* 音量相关标签 */
+#volume_label {
+    color: #90a4ae;
+    font-size: 12px;
+    text-align: center;
+}

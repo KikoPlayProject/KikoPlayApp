@@ -1,0 +1,7 @@
+{
+    "name": "音乐播放器",
+    "id": "kapp.music_player",
+    "version": "1.0.0",
+    "icon": "app.svg",
+    "min_kiko": "1.0.3"
+}
