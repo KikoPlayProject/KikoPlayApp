@@ -159,22 +159,56 @@ bgm_api.get_ep = function(bgmId, ep_info, succ_func, err_func)
     })
 end
 
-bgm_api.add_collection = function(bgm_id, anime_name, is_private, collection_type, succ_callback)
+bgm_api.add_collection = function(bgm_id, anime_name, is_private, collection_type, succ_callback, retry_ctx)
     if bgm_id == nil or bgm_api.access_token == nil or not bgm_api.is_login then return end
-    if bgm_api.user_info.collection_bgm_ids[bgm_id] == collection_type then return end
+    if bgm_api.user_info.collection_bgm_ids[bgm_id] == collection_type then
+        -- 重试场景下命中去重守卫：收藏其实已成功，标记成功并清空重试
+        if retry_ctx ~= nil then
+            app.mark_retry_done(retry_ctx, "<small style='color: rgb(75, 244, 61);'>收藏成功</small>")
+        end
+        return
+    end
     local data = {
         type = collection_type, -- 1: 想看 2: 看过 3: 在看 4: 搁置 5: 抛弃
         private = is_private
     }
     local type_mapping = {
-        [1] = "想看", [2] = "看过", [3] = "在看", [4] = "搁置", [5] = "抛弃", 
+        [1] = "想看", [2] = "看过", [3] = "在看", [4] = "搁置", [5] = "抛弃",
     }
-    local lb_title = string.format([[
-        <span style="font-size:22px">%s <a style='color: rgb(96, 208, 252);' href="https://bgm.tv/subject/%s">%s</a></span> <small>%s</small> 
+    local s_lb, title_idx
+    if retry_ctx ~= nil then
+        -- 复用已有条目，不新建列表项
+        s_lb = retry_ctx.s_lb
+        title_idx = retry_ctx.title_idx
+        s_lb:setopt("title", "<small>正在同步...</small>")
+        bgm_api.user_info.hist_records[title_idx].status = "<small>正在同步...</small>"
+    else
+        local lb_title = string.format([[
+        <span style="font-size:22px">%s <a style='color: rgb(96, 208, 252);' href="https://bgm.tv/subject/%s">%s</a></span> <small>%s</small>
     ]], type_mapping[collection_type], bgm_id, anime_name, os.date("%Y-%m-%d %H:%M", os.time()))
-    local t_lb, s_lb = app.push_collection_item(true, lb_title, "<small>正在同步...</small>")
-    table.insert(bgm_api.user_info.hist_records, {record = lb_title})
-    local title_idx = #bgm_api.user_info.hist_records
+        local t_lb
+        t_lb, s_lb = app.push_collection_item(true, lb_title, "<small>正在同步...</small>")
+        table.insert(bgm_api.user_info.hist_records, {record = lb_title})
+        title_idx = #bgm_api.user_info.hist_records
+        app.bind_retry(s_lb, title_idx)
+    end
+
+    -- 失败回调：状态文本带上重试链接、写入重试信息并落盘
+    local on_fail = function(content, tooltip)
+        local t = string.format("<small style='color: rgb(252, 96, 125);'>收藏失败: %s</small> %s", content, app.RETRY_LINK)
+        s_lb:setopt("title", t)
+        if tooltip ~= nil then s_lb:setopt("tooltip", tooltip) end
+        local rec = bgm_api.user_info.hist_records[title_idx]
+        rec.status = t
+        rec.retry = {
+            type = "collection",
+            bgm_id = bgm_id,
+            anime_name = anime_name,
+            is_private = is_private,
+            collection_type = collection_type,
+        }
+        kiko.storage.set("bgm_user_info", bgm_api.user_info)
+    end
 
     local _, data_json = kiko.table2json(data)
     kiko.net.request({
@@ -190,7 +224,9 @@ bgm_api.add_collection = function(bgm_id, anime_name, is_private, collection_typ
             local t = "<small style='color: rgb(75, 244, 61);'>收藏成功</small>"
             s_lb:setopt("title", t)
             bgm_api.user_info.collection_bgm_ids[bgm_id] = collection_type
-            bgm_api.user_info.hist_records[title_idx].status = t
+            local rec = bgm_api.user_info.hist_records[title_idx]
+            rec.status = t
+            rec.retry = nil
             kiko.storage.set("bgm_user_info", bgm_api.user_info)
             kiko.flash()
             if succ_callback ~= nil then succ_callback() end
@@ -202,39 +238,75 @@ bgm_api.add_collection = function(bgm_id, anime_name, is_private, collection_typ
             if err == nil and obj["description"] ~= nil then
                 content = obj["description"]
             end
-            local t = string.format("<small style='color: rgb(252, 96, 125);'>收藏失败: %s</small>", content)
-            s_lb:setopt("title", t)
-            s_lb:setopt("tooltip", reply:error())
-            bgm_api.user_info.hist_records[title_idx].status = t
+            on_fail(content, reply:error())
         end
     })
 end
 
-bgm_api.ep_finish = function(anime_name, ep_info, is_private, update_item)
-    local anime = kiko.library.getanime(anime_name)
-    if anime == nil or anime.scriptId ~= "Kikyou.l.Bangumi" then return end
-    local bgm_id = tostring(anime.data)
+bgm_api.ep_finish = function(anime_name, ep_info, is_private, update_item, retry_ctx)
+    local bgm_id
+    if retry_ctx ~= nil then
+        -- 重试场景：bgm_id 复用保存的值，但仍需校验动画仍在资料库
+        bgm_id = retry_ctx.bgm_id
+        local anime = kiko.library.getanime(anime_name)
+        if anime == nil or anime.scriptId ~= "Kikyou.l.Bangumi" then
+            app.mark_retry_done(retry_ctx, "<small style='color: rgb(252, 96, 125);'>无法重试：动画已不在资料库</small>")
+            return
+        end
+    else
+        local anime = kiko.library.getanime(anime_name)
+        if anime == nil or anime.scriptId ~= "Kikyou.l.Bangumi" then return end
+        bgm_id = tostring(anime.data)
+    end
     local ep_index = ep_info.index
     if math.floor(ep_index) == ep_index then ep_index = math.floor(ep_index) end
-    if bgm_api.user_info.collection_bgm_ids[bgm_id] == nil and update_item then
+    -- 重试场景跳过"先收藏再更新进度"的自动链路，仅重放进度更新这一步；
+    -- 收藏补单有各自独立的重试入口
+    if retry_ctx == nil and bgm_api.user_info.collection_bgm_ids[bgm_id] == nil and update_item then
         bgm_api.add_collection(bgm_id, anime_name, is_private, 3, function()
             bgm_api.ep_finish(anime_name, ep_info, is_private)
         end)
         return
     end
-    
-    local lb_title = string.format([[
-        <span style="font-size:22px">完成了 <a style='color: rgb(96, 208, 252);' href="https://bgm.tv/subject/%s">%s</a> %s话</span> <small>%s</small> 
-    ]],  bgm_id, anime_name, tostring(ep_index), os.date("%Y-%m-%d %H:%M", os.time()))
-    local t_lb, s_lb = app.push_collection_item(true, lb_title, "<small>正在获取ep id...</small>")
-    table.insert(bgm_api.user_info.hist_records, {record = lb_title})
-    local title_idx = #bgm_api.user_info.hist_records
+
+    local s_lb, title_idx
+    if retry_ctx ~= nil then
+        s_lb = retry_ctx.s_lb
+        title_idx = retry_ctx.title_idx
+        s_lb:setopt("title", "<small>正在获取ep id...</small>")
+        bgm_api.user_info.hist_records[title_idx].status = "<small>正在获取ep id...</small>"
+    else
+        local lb_title = string.format([[
+            <span style="font-size:22px">完成了 <a style='color: rgb(96, 208, 252);' href="https://bgm.tv/subject/%s">%s</a> %s话</span> <small>%s</small>
+        ]],  bgm_id, anime_name, tostring(ep_index), os.date("%Y-%m-%d %H:%M", os.time()))
+        local t_lb
+        t_lb, s_lb = app.push_collection_item(true, lb_title, "<small>正在获取ep id...</small>")
+        table.insert(bgm_api.user_info.hist_records, {record = lb_title})
+        title_idx = #bgm_api.user_info.hist_records
+        app.bind_retry(s_lb, title_idx)
+    end
+
+    -- 失败回调：状态文本带上重试链接、写入重试信息并落盘
+    local on_fail = function(fail_text, tooltip)
+        local t = fail_text .. " " .. app.RETRY_LINK
+        s_lb:setopt("title", t)
+        if tooltip ~= nil then s_lb:setopt("tooltip", tooltip) end
+        local rec = bgm_api.user_info.hist_records[title_idx]
+        rec.status = t
+        rec.retry = {
+            type = "ep_finish",
+            bgm_id = bgm_id,
+            anime_name = anime_name,
+            ep_info = ep_info,
+            is_private = is_private,
+            update_item = update_item,
+        }
+        kiko.storage.set("bgm_user_info", bgm_api.user_info)
+    end
 
     local err_func = function(err)
         local t = string.format("<small style='color: rgb(252, 96, 125);'>获取ep id失败: %s</small>", err)
-        s_lb:setopt("title", t)
-        s_lb:setopt("tooltip", err)
-        bgm_api.user_info.hist_records[title_idx].status = t
+        on_fail(t, err)
     end
     local succ_func = function(ep_id, is_last)
         local t = "<small>正在更新进度...</small>"
@@ -255,7 +327,9 @@ bgm_api.ep_finish = function(anime_name, ep_info, is_private, update_item)
             success = function(reply)
                 local t = "<small style='color: rgb(75, 244, 61);'>分集进度更新成功</small>"
                 s_lb:setopt("title", t)
-                bgm_api.user_info.hist_records[title_idx].status = t
+                local rec = bgm_api.user_info.hist_records[title_idx]
+                rec.status = t
+                rec.retry = nil
                 kiko.storage.set("bgm_user_info", bgm_api.user_info)
                 kiko.flash()
                 kiko.log("is_last: ", is_last, "update_item: ", update_item)
@@ -271,9 +345,7 @@ bgm_api.ep_finish = function(anime_name, ep_info, is_private, update_item)
                     content = obj["description"]
                 end
                 local t = string.format("<small style='color: rgb(252, 96, 125);'>分集进度更新失败: %s</small>", content)
-                s_lb:setopt("title", t)
-                s_lb:setopt("tooltip", reply:error())
-                bgm_api.user_info.hist_records[title_idx].status = t
+                on_fail(t, reply:error())
             end
         })
     end

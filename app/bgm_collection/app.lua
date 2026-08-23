@@ -63,7 +63,14 @@ app.set_info_page = function()
     local count = #app.bgm.user_info.hist_records
     for i = count, 1, -1 do
         local item = app.bgm.user_info.hist_records[i]
-        app.push_collection_item(false, item.record, item.status)
+        local status = item.status or ""
+        -- 旧版本存储的失败状态文本里没有重试链接，加载时补上
+        if item.retry ~= nil and string.find(status, 'href="retry"', 1, true) == nil then
+            status = status .. " " .. app.RETRY_LINK
+            item.status = status
+        end
+        local _, s_lb = app.push_collection_item(false, item.record, status)
+        app.bind_retry(s_lb, i)
     end
 
     local check_status = kiko.storage.get("check_status") or {
@@ -196,7 +203,7 @@ app.push_collection_item = function(is_front, content, status)
     local view = app.collection_hist_list:setview(idx, [[
         <vview>
             <label id="item_text_label" word_wrap="true" open_link="true" text_selectable="true" />
-            <label id="item_status_label" open_link="true" text_selectable="true" />
+            <label id="item_status_label" open_link="false" text_selectable="true" />
         </vview>
     ]])
     local text_lb = view:getchild("item_text_label")
@@ -204,4 +211,51 @@ app.push_collection_item = function(is_front, content, status)
     text_lb:setopt("title", content)
     status_lb:setopt("title", status)
     return text_lb, status_lb
+end
+
+-- 失败状态文本里内嵌的重试链接，点击触发 link_click。作为状态文本的一部分，
+-- 不会改变条目高度，避免按钮控件带来的高度测量问题。
+-- 样式与条目标题里的 bgm.tv 链接写法一致（已被验证可正常渲染）。
+app.RETRY_LINK = [[<a style='color: rgb(96, 208, 252);' href="retry">重试</a>]]
+
+-- 绑定状态标签的 link_click：点击 href="retry" 链接时派发重试。
+-- 点击时动态读取 hist_records[title_idx].retry，因此无论失败多少次、是否重启，
+-- 同一 handler 始终拿到最新参数。
+app.bind_retry = function(s_lb, title_idx)
+    if s_lb == nil then return end
+    s_lb:onevent("link_click", function(param)
+        if param.link ~= "retry" then return end
+        local rec = app.bgm.user_info.hist_records[title_idx]
+        if rec == nil or rec.retry == nil then return end
+        app.do_retry(rec.retry, s_lb, title_idx)
+    end)
+end
+
+-- 派发重试，复用同一条目的 s_lb / title_idx，不新建列表项
+app.do_retry = function(retry_info, s_lb, title_idx)
+    if retry_info == nil then return end
+    local ctx = {
+        s_lb = s_lb,
+        title_idx = title_idx,
+        bgm_id = retry_info.bgm_id,
+    }
+    if retry_info.type == "collection" then
+        app.bgm.add_collection(retry_info.bgm_id, retry_info.anime_name,
+            retry_info.is_private, retry_info.collection_type, nil, ctx)
+    elseif retry_info.type == "ep_finish" then
+        app.bgm.ep_finish(retry_info.anime_name, retry_info.ep_info,
+            retry_info.is_private, retry_info.update_item, ctx)
+    end
+end
+
+-- 标记重试条目结束（成功或不可恢复失败）：更新状态文本、清空 retry 并落盘
+app.mark_retry_done = function(retry_ctx, status_text)
+    if retry_ctx == nil then return end
+    if retry_ctx.s_lb ~= nil then retry_ctx.s_lb:setopt("title", status_text) end
+    local rec = app.bgm.user_info.hist_records[retry_ctx.title_idx]
+    if rec ~= nil then
+        rec.status = status_text
+        rec.retry = nil
+    end
+    kiko.storage.set("bgm_user_info", app.bgm.user_info)
 end
